@@ -1,0 +1,25 @@
+{
+    "name": "medsdn/laravel-social-share",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "MedSDN",
+            "email": "support@medsdn.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Webkul\\SocialShare\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Webkul\\SocialShare\\Providers\\SocialShareServiceProvider"
+            ],
+            "aliases": {}
+        }
+    },
+    "minimum-stability": "dev"
+}
