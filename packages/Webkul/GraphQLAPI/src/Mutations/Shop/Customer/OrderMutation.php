@@ -1,0 +1,101 @@
+<?php
+
+namespace Webkul\GraphQLAPI\Mutations\Shop\Customer;
+
+use App\Http\Controllers\Controller;
+use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use Webkul\Checkout\Facades\Cart;
+use Webkul\GraphQLAPI\Validators\CustomException;
+use Webkul\Sales\Repositories\OrderRepository;
+use Webkul\Sales\Models\Order;
+
+class OrderMutation extends Controller
+{
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(protected OrderRepository $orderRepository) {}
+
+    /**
+     * Reorder a customer's order.
+     *
+     * @return array
+     *
+     * @throws CustomException
+     */
+    public function reorder(mixed $rootValue, array $args, GraphQLContext $context)
+    {
+        $customer = medsdn_graphql()->authorize();
+
+        $order = $this->orderRepository->findOneWhere([
+            'id'          => $args['id'],
+            'customer_id' => $customer->id,
+        ]);
+
+        if (! $order) {
+            return [
+                'success' => false,
+                'message' => trans('medsdn_graphql::app.shop.customers.account.orders.not-found'),
+                'cart'    => Cart::getCart(),
+            ];
+        }
+
+        foreach ($order->items as $item) {
+            try {
+                Cart::addProduct($item->product, $item->additional);
+            } catch (\Exception $e) {
+            }
+        }
+
+        return [
+            'success' => true,
+            'message' => trans('medsdn_graphql::app.shop.checkout.cart.item.success.add-to-cart'),
+            'cart'    => Cart::getCart(),
+        ];
+    }
+
+    /**
+     * Remove a resource from storage.
+     *
+     * @return array
+     *
+     * @throws CustomException
+     */
+    public function cancel(mixed $rootValue, array $args, GraphQLContext $context)
+    {
+        $customer = medsdn_graphql()->authorize();
+
+        try {
+            $order = $this->orderRepository->findOneWhere([
+                'id'          => $args['id'],
+                'customer_id' => $customer->id,
+            ]);
+
+            if (! $order) {
+                throw new CustomException(trans('medsdn_graphql::app.shop.customers.account.orders.cancel-error'));
+            }
+
+            if ($order->status == Order::STATUS_CANCELED) {
+                 return [
+                    'success' => false,
+                    'message' => trans('medsdn_graphql::app.shop.customers.account.orders.already-cancel'),
+                    'order'   => $order->refresh(),
+                ];
+            }
+
+            $result = $this->orderRepository->cancel($order);
+
+            return [
+                'success' => $result,
+                'message' => $result
+                    ? trans('medsdn_graphql::app.shop.customers.account.orders.cancel-success')
+                    : trans('medsdn_graphql::app.shop.customers.account.orders.cancel-error'),
+                'order'   => $order->refresh(),
+            ];
+        } catch (\Exception $e) {
+            throw new CustomException($e->getMessage());
+        }
+    }
+}
