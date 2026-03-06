@@ -12,7 +12,10 @@
     "autoload": {
         "psr-4": {
             "Webkul\\Admin\\": "src/"
-        }
+        },
+        "files": [
+            "src/Http/helpers.php"
+        ]
     },
     "extra": {
         "laravel": {
