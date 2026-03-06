@@ -14,123 +14,22 @@ import { createApp } from "vue/dist/vue.esm-bundler";
 window.app = createApp({
     data() {
         return {
-            // Sidebar state management
             isMenuActive: false,
-            hoveringMenu: null,
-            sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true',
-            
-            // Mobile drawer state
-            activeMenu: null,
-            mobileDrawerOpen: false,
+
+            hoveringMenu: '',
         };
+    },
+
+    created() {
+        window.addEventListener('click', this.handleFocusOut);
+    },
+
+    beforeDestroy() {
+        window.removeEventListener('click', this.handleFocusOut);
     },
 
     methods: {
         onSubmit() {},
-        
-        /**
-         * Handle mouse over sidebar menu item
-         * @param {string} menuKey - Unique menu identifier
-         */
-        handleMouseOver(menuKey) {
-            if (!this.isMenuActive) {
-                this.hoveringMenu = menuKey;
-            }
-        },
-        
-        /**
-         * Handle mouse leave from sidebar
-         */
-        handleMouseLeave() {
-            if (!this.isMenuActive) {
-                this.hoveringMenu = null;
-            }
-        },
-        
-        /**
-         * Handle click outside menu to close
-         * @param {Event} event - Click event
-         */
-        handleFocusOut(event) {
-            const sidebar = this.$refs.sidebar;
-            const submenu = this.$refs.submenu;
-            
-            if (sidebar && !sidebar.contains(event.target) &&
-                (!submenu || !submenu.contains(event.target))) {
-                this.isMenuActive = false;
-                this.hoveringMenu = null;
-            }
-        },
-        
-        /**
-         * Toggle sidebar collapsed state
-         */
-        toggleSidebar() {
-            this.sidebarCollapsed = !this.sidebarCollapsed;
-            localStorage.setItem('sidebarCollapsed', this.sidebarCollapsed);
-            
-            // Reset menu states when toggling
-            this.isMenuActive = false;
-            this.hoveringMenu = null;
-        },
-        
-        /**
-         * Check if menu should show submenu
-         * @param {string} menuKey - Menu identifier
-         * @returns {boolean}
-         */
-        shouldShowSubmenu(menuKey) {
-            return (this.isMenuActive && this.hoveringMenu === menuKey) ||
-                   (!this.isMenuActive && this.hoveringMenu === menuKey);
-        },
-        
-        /**
-         * Toggle mobile menu expansion
-         * @param {string} menuKey - Menu to toggle
-         */
-        toggleMobileMenu(menuKey) {
-            this.activeMenu = this.activeMenu === menuKey ? null : menuKey;
-        },
-        
-        /**
-         * Automatically expand the menu containing the active page
-         * Used in mobile drawer on mount
-         */
-        autoExpandActiveMenu() {
-            // Find active menu item
-            const activeLink = document.querySelector('a.bg-brandColor');
-            if (!activeLink) return;
-            
-            // Find parent menu
-            const parentMenu = activeLink.closest('[data-mobile-menu]');
-            if (parentMenu) {
-                const menuKey = parentMenu.getAttribute('data-mobile-menu');
-                this.activeMenu = menuKey;
-            }
-        },
-        
-        /**
-         * Get current responsive breakpoint
-         * @returns {string} Current breakpoint name
-         */
-        getCurrentBreakpoint() {
-            const width = window.innerWidth;
-            
-            if (width < 525) return 'xs';
-            if (width < 768) return 'sm';
-            if (width < 1024) return 'md';
-            if (width < 1240) return 'lg';
-            if (width < 1920) return 'xl';
-            return '2xl';
-        },
-        
-        /**
-         * Check if current viewport is mobile (below lg breakpoint)
-         * @returns {boolean}
-         */
-        isMobileViewport() {
-            return window.innerWidth < 1024;
-        },
 
         onInvalidSubmit({ values, errors, results }) {
             setTimeout(() => {
@@ -226,22 +125,54 @@ window.app = createApp({
                 }
             }, 100);
         },
-    },
-    
-    mounted() {
-        // Add click outside listener
-        this.clickOutsideHandler = this.handleFocusOut.bind(this);
-        window.addEventListener('click', this.clickOutsideHandler);
-        
-        // Auto-expand active menu in mobile
-        this.autoExpandActiveMenu();
-    },
-    
-    beforeUnmount() {
-        // Cleanup event listeners
-        if (this.clickOutsideHandler) {
-            window.removeEventListener('click', this.clickOutsideHandler);
-        }
+
+        handleMouseOver(event) {
+            if (this.isMenuActive) {
+                return;
+            }
+
+            const parentElement = event.currentTarget.parentElement;
+
+            if (parentElement.classList.contains('sidebar-collapsed')) {
+                parentElement.classList.remove('sidebar-collapsed');
+
+                parentElement.classList.add('sidebar-not-collapsed');
+            }
+
+        },
+
+        handleMouseLeave(event) {
+            if (this.isMenuActive) {
+                return;
+            }
+
+            const parentElement = event.currentTarget.parentElement;
+
+            if (parentElement.classList.contains('sidebar-not-collapsed')) {
+                parentElement.classList.remove('sidebar-not-collapsed');
+
+                parentElement.classList.add('sidebar-collapsed');
+            }
+        },
+
+        handleFocusOut(event) {
+            const sidebar = this.$refs.sidebar;
+
+            if (
+                sidebar &&
+                !sidebar.contains(event.target)
+            ) {
+                this.isMenuActive = false;
+
+                const parentElement = sidebar.parentElement;
+
+                if (parentElement.classList.contains('sidebar-not-collapsed')) {
+                    parentElement.classList.remove('sidebar-not-collapsed');
+
+                    parentElement.classList.add('sidebar-collapsed');
+                }
+            }
+        },
     },
 });
 
@@ -250,37 +181,33 @@ window.app = createApp({
  */
 import Admin from "./plugins/admin";
 import Axios from "./plugins/axios";
-import CreateElement from "./plugins/createElement";
 import Emitter from "./plugins/emitter";
 import Flatpickr from "./plugins/flatpickr";
 import VeeValidate from "./plugins/vee-validate";
+import CreateElement from "./plugins/createElement";
 import Draggable from "./plugins/draggable";
-import VueCal from 'vue-cal';
-import 'vue-cal/dist/vuecal.css';
-
-app.component('vue-cal', VueCal);
+import VueCal from "./plugins/vue-cal";
 
 [
     Admin,
     Axios,
-    CreateElement,
     Emitter,
+    CreateElement,
+    Draggable,
     Flatpickr,
     VeeValidate,
-    Draggable,
+    VueCal,
 ].forEach((plugin) => app.use(plugin));
 
 /**
  * Global directives.
  */
-import Slugify from "./directives/slugify";
-import SlugifyTarget from "./directives/slugify-target";
 import Debounce from "./directives/debounce";
-import Code from "./directives/code";
+import DOMPurify from "./directives/dompurify";
+import ToolTip from "./directives/tooltip";
 
-app.directive("slugify", Slugify);
-app.directive("slugify-target", SlugifyTarget);
 app.directive("debounce", Debounce);
-app.directive("code", Code);
+app.directive("safe-html", DOMPurify);
+app.directive("tooltip", ToolTip);
 
 export default app;
