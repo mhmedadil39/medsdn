@@ -13,11 +13,101 @@ import { createApp } from "vue/dist/vue.esm-bundler";
  */
 window.app = createApp({
     data() {
-        return {};
+        return {
+            // Sidebar state management
+            isMenuActive: false,
+            hoveringMenu: null,
+            sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true',
+            
+            // Mobile drawer state
+            activeMenu: null,
+            mobileDrawerOpen: false,
+        };
     },
 
     methods: {
         onSubmit() {},
+        
+        /**
+         * Handle mouse over sidebar menu item
+         * @param {string} menuKey - Unique menu identifier
+         */
+        handleMouseOver(menuKey) {
+            if (!this.isMenuActive) {
+                this.hoveringMenu = menuKey;
+            }
+        },
+        
+        /**
+         * Handle mouse leave from sidebar
+         */
+        handleMouseLeave() {
+            if (!this.isMenuActive) {
+                this.hoveringMenu = null;
+            }
+        },
+        
+        /**
+         * Handle click outside menu to close
+         * @param {Event} event - Click event
+         */
+        handleFocusOut(event) {
+            const sidebar = this.$refs.sidebar;
+            const submenu = this.$refs.submenu;
+            
+            if (sidebar && !sidebar.contains(event.target) &&
+                (!submenu || !submenu.contains(event.target))) {
+                this.isMenuActive = false;
+                this.hoveringMenu = null;
+            }
+        },
+        
+        /**
+         * Toggle sidebar collapsed state
+         */
+        toggleSidebar() {
+            this.sidebarCollapsed = !this.sidebarCollapsed;
+            localStorage.setItem('sidebarCollapsed', this.sidebarCollapsed);
+            
+            // Reset menu states when toggling
+            this.isMenuActive = false;
+            this.hoveringMenu = null;
+        },
+        
+        /**
+         * Check if menu should show submenu
+         * @param {string} menuKey - Menu identifier
+         * @returns {boolean}
+         */
+        shouldShowSubmenu(menuKey) {
+            return (this.isMenuActive && this.hoveringMenu === menuKey) ||
+                   (!this.isMenuActive && this.hoveringMenu === menuKey);
+        },
+        
+        /**
+         * Toggle mobile menu expansion
+         * @param {string} menuKey - Menu to toggle
+         */
+        toggleMobileMenu(menuKey) {
+            this.activeMenu = this.activeMenu === menuKey ? null : menuKey;
+        },
+        
+        /**
+         * Automatically expand the menu containing the active page
+         * Used in mobile drawer on mount
+         */
+        autoExpandActiveMenu() {
+            // Find active menu item
+            const activeLink = document.querySelector('a.bg-brandColor');
+            if (!activeLink) return;
+            
+            // Find parent menu
+            const parentMenu = activeLink.closest('[data-mobile-menu]');
+            if (parentMenu) {
+                const menuKey = parentMenu.getAttribute('data-mobile-menu');
+                this.activeMenu = menuKey;
+            }
+        },
 
         onInvalidSubmit({ values, errors, results }) {
             setTimeout(() => {
@@ -113,6 +203,22 @@ window.app = createApp({
                 }
             }, 100);
         },
+    },
+    
+    mounted() {
+        // Add click outside listener
+        this.clickOutsideHandler = this.handleFocusOut.bind(this);
+        window.addEventListener('click', this.clickOutsideHandler);
+        
+        // Auto-expand active menu in mobile
+        this.autoExpandActiveMenu();
+    },
+    
+    beforeUnmount() {
+        // Cleanup event listeners
+        if (this.clickOutsideHandler) {
+            window.removeEventListener('click', this.clickOutsideHandler);
+        }
     },
 });
 
