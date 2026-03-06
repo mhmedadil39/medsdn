@@ -108,6 +108,29 @@ window.app = createApp({
                 this.activeMenu = menuKey;
             }
         },
+        
+        /**
+         * Get current responsive breakpoint
+         * @returns {string} Current breakpoint name
+         */
+        getCurrentBreakpoint() {
+            const width = window.innerWidth;
+            
+            if (width < 525) return 'xs';
+            if (width < 768) return 'sm';
+            if (width < 1024) return 'md';
+            if (width < 1240) return 'lg';
+            if (width < 1920) return 'xl';
+            return '2xl';
+        },
+        
+        /**
+         * Check if current viewport is mobile (below lg breakpoint)
+         * @returns {boolean}
+         */
+        isMobileViewport() {
+            return window.innerWidth < 1024;
+        },
 
         onInvalidSubmit({ values, errors, results }) {
             setTimeout(() => {
