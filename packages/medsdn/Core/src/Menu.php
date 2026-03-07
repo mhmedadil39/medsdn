@@ -55,7 +55,7 @@ class Menu
         switch ($area) {
             case self::ADMIN:
                 $this->configMenu = $configMenu
-                    ->filter(fn ($item) => bouncer()->hasPermission($item['key']))
+                    ->filter(fn ($item) => $this->hasAuthorizedMenuBranch($item, $configMenu))
                     ->toArray();
                 break;
 
@@ -81,6 +81,23 @@ class Menu
 
         return collect($this->removeUnauthorizedMenuItem())
             ->sortBy('sort');
+    }
+
+    /**
+     * Determine whether an admin menu item or any of its descendants is authorized.
+     */
+    private function hasAuthorizedMenuBranch(array $menuItem, Collection $configMenu): bool
+    {
+        if (bouncer()->hasPermission($menuItem['key'])) {
+            return true;
+        }
+
+        $menuBranchKey = $menuItem['key'].'.';
+
+        return $configMenu->contains(
+            fn ($candidate) => str_starts_with($candidate['key'], $menuBranchKey)
+                && bouncer()->hasPermission($candidate['key'])
+        );
     }
 
     /**

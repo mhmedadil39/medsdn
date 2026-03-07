@@ -11,7 +11,8 @@
 .vagrant
 *.hot
 .agents/
-.claude/
+.worktrees/
+storage/
 .kiro/
 .opencode/
 /agents/
@@ -42,6 +43,4 @@ skills-lock.json
 yarn.lock
 yarn-error.log
 .gitnexus
-medsdn.zip
-medsdn.zip
 medsdn.zip

@@ -3,6 +3,8 @@
 use Illuminate\Support\Collection;
 use Webkul\Core\Menu;
 use Webkul\Core\Menu\MenuItem;
+use Webkul\User\Models\Admin;
+use Webkul\User\Models\Role;
 
 /**
  * Create config for menu items.
@@ -92,4 +94,24 @@ it('should process sub menu items', function () {
     expect($subMenuItems->last()->key)->toBe('sales');
 
     expect($subMenuItems->last()->name)->toBe(trans('admin::app.components.layouts.sidebar.sales'));
+});
+
+it('keeps a parent admin menu item when only a child permission is granted', function () {
+    $role = Role::factory()->create([
+        'permission_type' => 'custom',
+        'permissions' => ['sales.orders'],
+    ]);
+
+    $admin = Admin::factory()->create([
+        'role_id' => $role->id,
+    ]);
+
+    $this->actingAs($admin, 'admin');
+
+    $menuItems = (new Menu)->getItems(Menu::ADMIN);
+
+    expect($menuItems)->toHaveCount(1);
+    expect($menuItems->first()->key)->toBe('sales');
+    expect($menuItems->first()->route)->toBe('admin.sales.orders.index');
+    expect($menuItems->first()->getChildren()->pluck('key')->all())->toBe(['sales.orders']);
 });
