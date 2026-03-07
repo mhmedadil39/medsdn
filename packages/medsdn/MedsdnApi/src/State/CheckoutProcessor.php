@@ -80,6 +80,8 @@ class CheckoutProcessor implements ProcessorInterface
             throw new ResourceNotFoundException(__('medsdnapi::app.graphql.cart.invalid-token'));
         }
 
+        Cart::setCart($cart);
+
         return match ($operationName) {
             'saveAddress'        => $this->saveAddress($cart, $data),
             'saveShippingMethod' => $this->saveShippingMethod($cart, $data),
@@ -412,6 +414,7 @@ class CheckoutProcessor implements ProcessorInterface
         if (! $hasPaymentMethod) {
             throw new OperationFailedException(__('medsdnapi::app.graphql.checkout.payment-method-required'));
         }
+
     }
 
     /**

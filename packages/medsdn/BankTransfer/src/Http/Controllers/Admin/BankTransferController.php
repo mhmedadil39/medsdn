@@ -27,7 +27,7 @@ class BankTransferController extends Controller
     public function view($id)
     {
         $payment = $this->bankTransferRepository
-            ->with(['order', 'customer', 'reviewer'])
+            ->with(['payment', 'order', 'customer', 'reviewer'])
             ->findOrFail($id);
 
         return view('banktransfer::admin.view', compact('payment'));

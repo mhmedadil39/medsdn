@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Webkul\Checkout\Models\CartProxy;
+use Webkul\Payment\Models\Payment;
 use Webkul\Sales\Contracts\Order as OrderContract;
 use Webkul\Sales\Database\Factories\OrderFactory;
 
@@ -233,6 +235,14 @@ class Order extends Model implements OrderContract
     public function payment(): HasOne
     {
         return $this->hasOne(OrderPaymentProxy::modelClass());
+    }
+
+    /**
+     * Generic payment records tied to the order.
+     */
+    public function payments(): MorphMany
+    {
+        return $this->morphMany(Payment::class, 'payable');
     }
 
     /**

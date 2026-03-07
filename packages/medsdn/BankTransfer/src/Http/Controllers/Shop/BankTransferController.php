@@ -6,11 +6,14 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Webkul\BankTransfer\Helpers\FileHelper;
+use Webkul\BankTransfer\Actions\StoreBankTransferReceiptAction;
 use Webkul\BankTransfer\Http\Requests\PaymentProofRequest;
 use Webkul\BankTransfer\Repositories\BankTransferRepository;
 use Webkul\Checkout\Facades\Cart;
-use Webkul\Sales\Repositories\InvoiceRepository;
+use Webkul\Payment\Actions\CreateOrderPaymentAction;
+use Webkul\Payment\Enums\PaymentMethodCode;
+use Webkul\Payment\Enums\PaymentStatus;
+use Webkul\Sales\Models\Order;
 use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\Sales\Transformers\OrderResource;
 use Webkul\Shop\Http\Controllers\Controller;
@@ -25,7 +28,8 @@ class BankTransferController extends Controller
     public function __construct(
         protected BankTransferRepository $bankTransferRepository,
         protected OrderRepository $orderRepository,
-        protected InvoiceRepository $invoiceRepository
+        protected CreateOrderPaymentAction $createOrderPaymentAction,
+        protected StoreBankTransferReceiptAction $storeBankTransferReceiptAction
     ) {
     }
 
@@ -68,22 +72,36 @@ class BankTransferController extends Controller
                 // Create order
                 $data = (new OrderResource($cart))->jsonSerialize();
                 $order = $this->orderRepository->create($data);
+                $order->forceFill(['status' => Order::STATUS_PENDING_PAYMENT])->save();
 
                 // Upload payment proof
                 $file = $request->file('payment_proof');
-                $filePath = FileHelper::store($file, $order->id);
-
-                if (! $filePath) {
-                    throw new \Exception(trans('banktransfer::app.shop.errors.upload-failed'));
-                }
+                $receipt = $this->storeBankTransferReceiptAction->handle($file, $order->id);
+                $payment = $this->createOrderPaymentAction->handle(
+                    order: $order,
+                    paymentMethod: PaymentMethodCode::BANK_TRANSFER,
+                    status: PaymentStatus::PENDING_REVIEW,
+                    attributes: [
+                        'external_reference' => $request->input('transaction_reference'),
+                        'notes' => 'Order awaiting manual bank transfer review',
+                        'meta' => [
+                            'source' => 'shop.checkout.banktransfer',
+                        ],
+                    ]
+                );
 
                 // Create bank transfer payment record
                 $paymentData = [
+                    'payment_id' => $payment->id,
                     'order_id' => $order->id,
                     'customer_id' => $cart->customer_id,
                     'method_code' => 'banktransfer',
                     'transaction_reference' => $request->input('transaction_reference'),
-                    'slip_path' => $filePath,
+                    'slip_path' => $receipt['slip_path'],
+                    'receipt_disk' => $receipt['receipt_disk'],
+                    'receipt_name' => $receipt['receipt_name'],
+                    'receipt_mime' => $receipt['receipt_mime'],
+                    'receipt_size' => $receipt['receipt_size'],
                     'status' => 'pending',
                 ];
 
@@ -93,6 +111,7 @@ class BankTransferController extends Controller
                 Log::info('Bank transfer payment proof uploaded', [
                     'order_id' => $order->id,
                     'payment_id' => $bankTransferPayment->id,
+                    'generic_payment_id' => $payment->id,
                     'customer_id' => $cart->customer_id,
                 ]);
 

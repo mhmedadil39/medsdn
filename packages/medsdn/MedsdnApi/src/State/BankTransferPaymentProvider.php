@@ -10,6 +10,7 @@ use Webkul\BankTransfer\Repositories\BankTransferRepository;
 use Webkul\MedsdnApi\Dto\BankTransferPaymentOutput;
 use Webkul\MedsdnApi\Exception\AuthenticationException;
 use Webkul\MedsdnApi\Exception\ResourceNotFoundException;
+use Webkul\Payment\Enums\PaymentStatus;
 
 /**
  * Provides bank transfer payment data for customers.
@@ -27,7 +28,7 @@ class BankTransferPaymentProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
         try {
-            $customer = Auth::guard('customer')->user();
+            $customer = $this->resolveCustomer();
 
             if (! $customer) {
                 throw new AuthenticationException(
@@ -47,7 +48,7 @@ class BankTransferPaymentProvider implements ProviderInterface
         } catch (\Exception $e) {
             Log::error('Bank Transfer API - Get Payments Error', [
                 'error' => $e->getMessage(),
-                'customer_id' => Auth::guard('customer')->id(),
+                'customer_id' => $this->resolveCustomer()?->id,
             ]);
 
             throw new ResourceNotFoundException(
@@ -62,7 +63,7 @@ class BankTransferPaymentProvider implements ProviderInterface
     protected function getPayment(int $id, int $customerId): BankTransferPaymentOutput
     {
         $payment = $this->bankTransferRepository
-            ->with(['order', 'reviewer'])
+            ->with(['payment', 'order', 'reviewer'])
             ->where('customer_id', $customerId)
             ->find($id);
 
@@ -83,7 +84,7 @@ class BankTransferPaymentProvider implements ProviderInterface
         $perPage = $context['filters']['per_page'] ?? 15;
 
         $paginator = $this->bankTransferRepository
-            ->with(['order'])
+            ->with(['payment', 'order'])
             ->where('customer_id', $customerId)
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
@@ -117,14 +118,16 @@ class BankTransferPaymentProvider implements ProviderInterface
         $output->transactionReference = $payment->transaction_reference;
         $output->status = $payment->status;
         $output->statusLabel = $this->getStatusLabel($payment->status);
+        $output->paymentId = $payment->payment_id;
+        $output->paymentStatus = $payment->payment?->status?->value;
         $output->reviewedBy = $payment->reviewed_by;
         $output->reviewedAt = $payment->reviewed_at?->toIso8601String();
         $output->adminNote = $payment->admin_note;
         $output->createdAt = $payment->created_at->toIso8601String();
         $output->updatedAt = $payment->updated_at->toIso8601String();
-        $output->isPending = $payment->isPending();
-        $output->isApproved = $payment->isApproved();
-        $output->isRejected = $payment->isRejected();
+        $output->isPending = $payment->payment?->status === PaymentStatus::PENDING_REVIEW || $payment->isPending();
+        $output->isApproved = in_array($payment->payment?->status, [PaymentStatus::APPROVED, PaymentStatus::PAID], true) || $payment->isApproved();
+        $output->isRejected = $payment->payment?->status === PaymentStatus::REJECTED || $payment->isRejected();
 
         // Include order data if loaded
         if ($payment->relationLoaded('order') && $payment->order) {
@@ -163,5 +166,12 @@ class BankTransferPaymentProvider implements ProviderInterface
             'rejected' => trans('banktransfer::app.admin.datagrid.rejected'),
             default => $status,
         };
+    }
+
+    protected function resolveCustomer(): ?object
+    {
+        return Auth::guard('sanctum')->user()
+            ?: Auth::guard('api')->user()
+            ?: Auth::guard('customer')->user();
     }
 }

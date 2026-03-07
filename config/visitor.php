@@ -20,27 +20,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | IP Resolver
-    |--------------------------------------------------------------------------
-    |
-    | This resolver is used to get the visitor's IP address.
-    | Set to null to use Laravel's default request IP resolution.
-    |
-    */
-    'resolver' => null,
-
-    /*
-    |--------------------------------------------------------------------------
-    | IP Resolvers
-    |--------------------------------------------------------------------------
-    |
-    | List of available IP resolvers for the visitor package.
-    |
-    */
-    'resolvers' => [],
-
-    /*
-    |--------------------------------------------------------------------------
     | List of Drivers
     |--------------------------------------------------------------------------
     |
@@ -54,5 +33,42 @@ return [
     'drivers' => [
         'jenssegers' => \Shetabit\Visitor\Drivers\JenssegersAgent::class,
         'UAParser' => \Shetabit\Visitor\Drivers\UAParser::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | GeoIP Enrichment
+    |--------------------------------------------------------------------------
+    |
+    | Visits can optionally be enriched with geolocation data stored in
+    | the `geo_raw` column. The null resolver keeps visitor logging safe
+    | even when GeoIP enrichment is disabled.
+    |
+    */
+    'geoip' => false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | GeoIP Resolver
+    |--------------------------------------------------------------------------
+    |
+    | The installed visitor package still validates the resolver during
+    | bootstrap even when geoip enrichment is disabled, so default to a
+    | resolver class that is present in this installation.
+    |
+    */
+    'resolver' => 'stevebauman',
+
+    /*
+    |--------------------------------------------------------------------------
+    | GeoIP Resolvers
+    |--------------------------------------------------------------------------
+    |
+    | Available geolocation resolvers for the visitor package.
+    |
+    */
+    'resolvers' => [
+        'stevebauman' => \Shetabit\Visitor\Resolvers\GeoIp\SteveBaumanResolver::class,
+        'null' => \Shetabit\Visitor\Resolvers\GeoIp\NullResolver::class,
     ],
 ];

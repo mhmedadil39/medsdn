@@ -9,6 +9,7 @@ use Webkul\MedsdnApi\Dto\PaymentMethodOutput;
 use Webkul\MedsdnApi\Exception\ResourceNotFoundException;
 use Webkul\MedsdnApi\Facades\CartTokenFacade;
 use Webkul\MedsdnApi\Facades\TokenHeaderFacade;
+use Webkul\Checkout\Facades\Cart;
 use Webkul\Payment\Facades\Payment;
 
 /**
@@ -37,6 +38,8 @@ class PaymentMethodsProvider implements ProviderInterface
         if (! $cart) {
             throw new ResourceNotFoundException(__('medsdnapi::app.graphql.cart.invalid-token'));
         }
+
+        Cart::setCart($cart);
 
         $methods = Payment::getSupportedPaymentMethods();
 

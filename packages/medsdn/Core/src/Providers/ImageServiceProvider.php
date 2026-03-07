@@ -61,7 +61,7 @@ class ImageServiceProvider extends BaseImageServiceProvider
             $filenamePattern = '[ \w\\.\\/\\-\\@\(\)\=]+';
 
             $this->app['router']->get(config('imagecache.route').'/{template}/{filename}', [
-                'uses' => 'MedSDN\Core\ImageCache\Controller@getResponse',
+                'uses' => 'Webkul\Core\ImageCache\Controller@getResponse',
                 'as' => 'imagecache',
             ])->where(['filename' => $filenamePattern]);
         }

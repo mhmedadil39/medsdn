@@ -266,7 +266,7 @@ return [
     [
         'key' => 'settings',
         'name' => 'admin::app.components.layouts.sidebar.settings',
-        'route' => 'admin.settings.locales.index',
+        'route' => 'admin.settings.index',
         'sort' => 8,
         'icon' => 'icon-settings',
         'icon-class' => 'settings-icon',

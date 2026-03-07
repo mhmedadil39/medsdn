@@ -150,7 +150,7 @@ class BankTransferDataGrid extends DataGrid
             'type' => 'datetime',
             'searchable' => false,
             'filterable' => true,
-            'filterable_type' => 'date_range',
+            'filterable_type' => 'datetime_range',
             'sortable' => true,
         ]);
     }

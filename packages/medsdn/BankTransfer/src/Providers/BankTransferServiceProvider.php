@@ -13,6 +13,8 @@ class BankTransferServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->register(ModuleServiceProvider::class);
+
         $this->registerConfig();
     }
 
@@ -54,7 +56,7 @@ class BankTransferServiceProvider extends ServiceProvider
         );
 
         $this->mergeConfigFrom(
-            dirname(__DIR__).'/Config/menu.php', 'menu'
+            dirname(__DIR__).'/Config/menu.php', 'menu.admin'
         );
 
         $this->mergeConfigFrom(
