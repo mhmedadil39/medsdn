@@ -16,6 +16,7 @@ use Illuminate\Support\ServiceProvider;
 use Webkul\MedsdnApi\Console\Commands\GenerateStorefrontKey;
 use Webkul\MedsdnApi\Facades\CartTokenFacade;
 use Webkul\MedsdnApi\Http\Controllers\AdminGraphQLPlaygroundController;
+use Webkul\MedsdnApi\Http\Controllers\ApiPlatformAssetController;
 use Webkul\MedsdnApi\Http\Controllers\GraphQLPlaygroundController;
 use Webkul\MedsdnApi\Http\Middleware\VerifyStorefrontKey;
 use Webkul\MedsdnApi\Metadata\CustomIdentifiersExtractor;
@@ -480,6 +481,10 @@ class MedsdnApiServiceProvider extends ServiceProvider
      */
     protected function registerApiDocumentationRoutes(): void
     {
+        \Illuminate\Support\Facades\Route::get('/vendor/api-platform/{path}', ApiPlatformAssetController::class)
+            ->where('path', '.*')
+            ->name('medsdnapi.vendor-assets');
+
         \Illuminate\Support\Facades\Route::get('/api', \Webkul\MedsdnApi\Http\Controllers\ApiEntrypointController::class)
             ->name('medsdnapi.docs-index');
 
