@@ -7,7 +7,7 @@ return [
     App\Providers\AppServiceProvider::class,
 
     /**
-     * Webkul's service providers.
+     * MedSDN package service providers.
      */
     Webkul\Admin\Providers\AdminServiceProvider::class,
     Webkul\Attribute\Providers\AttributeServiceProvider::class,

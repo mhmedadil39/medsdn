@@ -214,7 +214,7 @@ php artisan route:clear
 If you get "table not found" errors:
 
 ```bash
-php artisan migrate --path=packages/Webkul/MedsdnApi/src/Database/Migrations
+php artisan migrate --path=packages/medsdn/MedsdnApi/src/Database/Migrations
 ```
 
 ### Authentication Issues

@@ -264,7 +264,7 @@
     "isDynamicEntry": true
   },
   "src/Resources/assets/css/app.css": {
-    "file": "assets/app-7LOY5Xg6.css",
+    "file": "assets/app-89zrsz-K.css",
     "src": "src/Resources/assets/css/app.css",
     "isEntry": true
   },
@@ -303,6 +303,10 @@
   "src/Resources/assets/images/empty-placeholders/default.svg": {
     "file": "assets/default-Bzl-phiD.svg",
     "src": "src/Resources/assets/images/empty-placeholders/default.svg"
+  },
+  "src/Resources/assets/images/empty-placeholders/files.svg": {
+    "file": "assets/files-DpB2XKqX.svg",
+    "src": "src/Resources/assets/images/empty-placeholders/files.svg"
   },
   "src/Resources/assets/images/empty-placeholders/orders.svg": {
     "file": "assets/orders-BL3uXoui.svg",
@@ -365,8 +369,8 @@
     "src": "src/Resources/assets/images/product-placeholders/zoom.svg"
   },
   "src/Resources/assets/images/settings/activities.svg": {
-    "file": "assets/activities-DpB2XKqX.svg",
-    "src": "src/Resources/assets/images/settings/activities.svg"
+    "file": "assets/files-DpB2XKqX.svg",
+    "src": "src/Resources/assets/images/empty-placeholders/files.svg"
   },
   "src/Resources/assets/images/settings/address.svg": {
     "file": "assets/address-DH7M3lNY.svg",
@@ -399,6 +403,10 @@
   "src/Resources/assets/images/settings/emails.svg": {
     "file": "assets/emails-D_qEBj20.svg",
     "src": "src/Resources/assets/images/settings/emails.svg"
+  },
+  "src/Resources/assets/images/settings/files copy.svg": {
+    "file": "assets/files-DpB2XKqX.svg",
+    "src": "src/Resources/assets/images/empty-placeholders/files.svg"
   },
   "src/Resources/assets/images/settings/files.svg": {
     "file": "assets/files-Xm-jQ6Fi.svg",

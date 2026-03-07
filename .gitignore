@@ -1,7 +1,7 @@
 .agents
 .agent*
 .claude
-.cursor
+.kiro
 .env
 .env.testing
 .idea
@@ -42,3 +42,5 @@ skills-lock.json
 yarn.lock
 yarn-error.log
 .gitnexus
+medsdn.zip
+medsdn.zip

@@ -20,7 +20,7 @@
 
 ## 🏥 About MedSDN
 
-MedSDN is a specialized eCommerce platform built on Laravel, designed specifically for medical and healthcare product sales. Based on the robust Bagisto framework, MedSDN adds healthcare-specific features while maintaining enterprise-grade scalability and performance.
+MedSDN is a specialized eCommerce platform built on Laravel, designed specifically for medical and healthcare product sales. Based on the robust MedSDN framework, MedSDN adds healthcare-specific features while maintaining enterprise-grade scalability and performance.
 
 ### Why MedSDN?
 
@@ -133,7 +133,7 @@ MedSDN follows a modular package-based architecture:
 ```
 medsdn/
 ├── app/                    # Core application
-├── packages/Webkul/        # Modular packages
+├── packages/medsdn/        # Modular packages
 │   ├── Admin/             # Admin panel
 │   ├── Shop/              # Storefront
 │   ├── Product/           # Product management
@@ -189,7 +189,7 @@ MedSDN is open-source software licensed under the [MIT License](LICENSE).
 
 ## 🙏 Acknowledgments
 
-MedSDN is built on top of [Bagisto](https://bagisto.com), an excellent open-source eCommerce framework. We're grateful to the Bagisto team and community for their foundational work.
+MedSDN is built on top of [MedSDN](https://medsdn.com), an excellent open-source eCommerce framework. We're grateful to the MedSDN team and community for their foundational work.
 
 ## 📞 Support
 
