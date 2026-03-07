@@ -30,6 +30,10 @@ class BankTransferPaymentOutput
 
     #[Groups(['read'])]
     #[ApiProperty(readable: true, writable: false)]
+    public ?int $paymentId = null;
+
+    #[Groups(['read'])]
+    #[ApiProperty(readable: true, writable: false)]
     public ?int $customerId = null;
 
     #[Groups(['read'])]
@@ -43,6 +47,10 @@ class BankTransferPaymentOutput
     #[Groups(['read'])]
     #[ApiProperty(readable: true, writable: false)]
     public ?string $status = null;
+
+    #[Groups(['read'])]
+    #[ApiProperty(readable: true, writable: false)]
+    public ?string $paymentStatus = null;
 
     #[Groups(['read'])]
     #[ApiProperty(readable: true, writable: false)]

@@ -205,7 +205,9 @@ class Menu
         if ($menuItem->haveChildren()) {
             $firstChildrenItem = $menuItem->getChildren()->first();
 
-            $menuItem->route = $firstChildrenItem->getRoute();
+            if (blank($menuItem->getRoute())) {
+                $menuItem->route = $firstChildrenItem->getRoute();
+            }
 
             $this->removeChildrenUnauthorizedMenuItem($firstChildrenItem);
         }

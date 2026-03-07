@@ -18,4 +18,13 @@ return [
         'active' => true,
         'sort' => 2,
     ],
+
+    'wallet' => [
+        'code' => 'wallet',
+        'title' => 'Wallet',
+        'description' => 'Pay using wallet balance',
+        'class' => 'Webkul\Payment\Payment\Wallet',
+        'active' => true,
+        'sort' => 3,
+    ],
 ];

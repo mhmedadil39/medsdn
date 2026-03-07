@@ -67,14 +67,14 @@ use Webkul\MedsdnApi\State\BankTransferStatisticsProvider;
     graphQlOperations: [
         // GraphQL: Query configuration
         new Query(
-            name: 'config',
+            name: 'bankTransferConfig',
             output: BankTransferConfigOutput::class,
             provider: BankTransferConfigProvider::class,
             description: 'Get bank transfer payment method configuration',
         ),
         // GraphQL: Query customer payments
         new QueryCollection(
-            name: 'payments',
+            name: 'bankTransferPayments',
             output: BankTransferPaymentOutput::class,
             provider: BankTransferPaymentProvider::class,
             security: "is_granted('ROLE_CUSTOMER')",
@@ -82,7 +82,7 @@ use Webkul\MedsdnApi\State\BankTransferStatisticsProvider;
         ),
         // GraphQL: Query payment details
         new Query(
-            name: 'payment',
+            name: 'bankTransferPayment',
             output: BankTransferPaymentOutput::class,
             provider: BankTransferPaymentProvider::class,
             security: "is_granted('ROLE_CUSTOMER')",
@@ -90,7 +90,7 @@ use Webkul\MedsdnApi\State\BankTransferStatisticsProvider;
         ),
         // GraphQL: Query statistics
         new Query(
-            name: 'statistics',
+            name: 'bankTransferStatistics',
             output: BankTransferStatisticsOutput::class,
             provider: BankTransferStatisticsProvider::class,
             security: "is_granted('ROLE_CUSTOMER')",
@@ -98,7 +98,7 @@ use Webkul\MedsdnApi\State\BankTransferStatisticsProvider;
         ),
         // GraphQL: Mutation upload
         new Mutation(
-            name: 'upload',
+            name: 'uploadBankTransferPayment',
             input: BankTransferPaymentInput::class,
             output: BankTransferPaymentOutput::class,
             processor: BankTransferPaymentProcessor::class,

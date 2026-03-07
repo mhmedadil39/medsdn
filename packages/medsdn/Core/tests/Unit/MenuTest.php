@@ -20,7 +20,7 @@ beforeEach(function () {
         ], [
             'key' => 'sales',
             'name' => 'admin::app.components.layouts.sidebar.sales',
-            'route' => 'admin.sales.orders.index',
+            'route' => 'admin.sales.transactions.index',
             'sort' => 2,
             'icon' => 'icon-sales',
         ], [
@@ -62,6 +62,34 @@ it('should add and get menu items', function () {
     expect($menuItems->first()->icon)->toBe('icon-dashboard');
 
     expect($menuItems->last()->key)->toBe('sales');
+});
+
+it('should preserve explicit parent route when menu item has children', function () {
+    $menu = new Menu;
+
+    $parent = new MenuItem(
+        key: 'sales',
+        name: 'Sales',
+        route: 'admin.sales.transactions.index',
+        sort: 1,
+        icon: 'icon-sales',
+        children: collect([
+            new MenuItem(
+                key: 'sales.orders',
+                name: 'Orders',
+                route: 'admin.sales.orders.index',
+                sort: 1,
+                icon: '',
+                children: collect([]),
+            ),
+        ]),
+    );
+
+    $class = new ReflectionClass(Menu::class);
+    $method = $class->getMethod('removeChildrenUnauthorizedMenuItem');
+    $method->invokeArgs($menu, [&$parent]);
+
+    expect($parent->route)->toBe('admin.sales.transactions.index');
 });
 
 it('should process sub menu items', function () {

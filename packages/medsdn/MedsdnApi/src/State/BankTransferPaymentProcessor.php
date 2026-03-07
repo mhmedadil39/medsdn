@@ -7,7 +7,7 @@ use ApiPlatform\State\ProcessorInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use Webkul\BankTransfer\Helpers\FileHelper;
+use Webkul\BankTransfer\Actions\StoreBankTransferReceiptAction;
 use Webkul\BankTransfer\Repositories\BankTransferRepository;
 use Webkul\Checkout\Facades\Cart;
 use Webkul\MedsdnApi\Dto\BankTransferPaymentInput;
@@ -15,6 +15,10 @@ use Webkul\MedsdnApi\Dto\BankTransferPaymentOutput;
 use Webkul\MedsdnApi\Exception\InvalidInputException;
 use Webkul\MedsdnApi\Exception\OperationFailedException;
 use Webkul\MedsdnApi\Facades\CartTokenFacade;
+use Webkul\Payment\Actions\CreateOrderPaymentAction;
+use Webkul\Payment\Enums\PaymentMethodCode;
+use Webkul\Payment\Enums\PaymentStatus;
+use Webkul\Sales\Models\Order;
 use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\Sales\Transformers\OrderResource;
 
@@ -25,7 +29,9 @@ class BankTransferPaymentProcessor implements ProcessorInterface
 {
     public function __construct(
         protected BankTransferRepository $bankTransferRepository,
-        protected OrderRepository $orderRepository
+        protected OrderRepository $orderRepository,
+        protected CreateOrderPaymentAction $createOrderPaymentAction,
+        protected StoreBankTransferReceiptAction $storeBankTransferReceiptAction
     ) {
     }
 
@@ -44,6 +50,7 @@ class BankTransferPaymentProcessor implements ProcessorInterface
         try {
             // Get cart from token
             $cart = $this->getCart($data->cartToken);
+            Cart::setCart($cart);
 
             // Validate cart
             if (Cart::hasError()) {
@@ -53,7 +60,7 @@ class BankTransferPaymentProcessor implements ProcessorInterface
             }
 
             // Validate payment method
-            if (!$cart->payment || $cart->payment->method !== 'banktransfer') {
+            if (! $cart->payment || $cart->payment->method !== 'banktransfer') {
                 throw new InvalidInputException(
                     trans('banktransfer::app.shop.errors.invalid-payment-method')
                 );
@@ -71,23 +78,36 @@ class BankTransferPaymentProcessor implements ProcessorInterface
                 // Create order
                 $orderData = (new OrderResource($cart))->jsonSerialize();
                 $order = $this->orderRepository->create($orderData);
+                $order->forceFill(['status' => Order::STATUS_PENDING_PAYMENT])->save();
 
                 // Upload payment proof
-                $filePath = FileHelper::store($data->paymentProof, $order->id);
+                $receipt = $this->storeBankTransferReceiptAction->handle($data->paymentProof, $order->id);
 
-                if (! $filePath) {
-                    throw new \Exception(
-                        trans('banktransfer::app.shop.errors.upload-failed')
-                    );
-                }
+                $payment = $this->createOrderPaymentAction->handle(
+                    order: $order,
+                    paymentMethod: PaymentMethodCode::BANK_TRANSFER,
+                    status: PaymentStatus::PENDING_REVIEW,
+                    attributes: [
+                        'external_reference' => $data->transactionReference,
+                        'notes' => 'Order awaiting manual bank transfer review',
+                        'meta' => [
+                            'source' => 'medsdnapi.banktransfer.upload',
+                        ],
+                    ]
+                );
 
                 // Create bank transfer payment record
                 $paymentData = [
+                    'payment_id' => $payment->id,
                     'order_id' => $order->id,
                     'customer_id' => $cart->customer_id,
                     'method_code' => 'banktransfer',
                     'transaction_reference' => $data->transactionReference,
-                    'slip_path' => $filePath,
+                    'slip_path' => $receipt['slip_path'],
+                    'receipt_disk' => $receipt['receipt_disk'],
+                    'receipt_name' => $receipt['receipt_name'],
+                    'receipt_mime' => $receipt['receipt_mime'],
+                    'receipt_size' => $receipt['receipt_size'],
                     'status' => 'pending',
                 ];
 
@@ -119,10 +139,12 @@ class BankTransferPaymentProcessor implements ProcessorInterface
                     ],
                     'payment' => [
                         'id' => $bankTransferPayment->id,
+                        'payment_id' => $payment->id,
                         'order_id' => $bankTransferPayment->order_id,
                         'method_code' => $bankTransferPayment->method_code,
                         'transaction_reference' => $bankTransferPayment->transaction_reference,
                         'status' => $bankTransferPayment->status,
+                        'payment_status' => $payment->status->value,
                         'status_label' => trans('banktransfer::app.admin.datagrid.pending'),
                         'created_at' => $bankTransferPayment->created_at->toIso8601String(),
                         'is_pending' => true,

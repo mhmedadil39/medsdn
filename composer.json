@@ -107,6 +107,7 @@
             "Webkul\\Tax\\": "packages/medsdn/Tax/src",
             "Webkul\\Theme\\": "packages/medsdn/Theme/src",
             "Webkul\\User\\": "packages/medsdn/User/src",
+            "Webkul\\Wallet\\": "packages/medsdn/Wallet/src",
             "Webkul\\GraphQL\\": "packages/medsdn/GraphQL/src",
             "Webkul\\BankTransfer\\": "packages/medsdn/BankTransfer/src"
         }

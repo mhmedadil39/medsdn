@@ -5,6 +5,7 @@ use Webkul\Core\Http\Middleware\NoCacheMiddleware;
 use Webkul\Shop\Http\Controllers\Customer\Account\AddressController;
 use Webkul\Shop\Http\Controllers\Customer\Account\DownloadableProductController;
 use Webkul\Shop\Http\Controllers\Customer\Account\OrderController;
+use Webkul\Shop\Http\Controllers\Customer\Account\WalletController;
 use Webkul\Shop\Http\Controllers\Customer\Account\WishlistController;
 use Webkul\Shop\Http\Controllers\Customer\CustomerController;
 use Webkul\Shop\Http\Controllers\Customer\ForgotPasswordController;
@@ -157,6 +158,17 @@ Route::prefix('customer')->group(function () {
                 Route::post('cancel/{id}', 'cancel')->name('shop.customers.account.orders.cancel');
 
                 Route::get('print/Invoice/{id}', 'printInvoice')->name('shop.customers.account.orders.print-invoice');
+            });
+
+            /**
+             * Wallet.
+             */
+            Route::controller(WalletController::class)->prefix('wallet')->group(function () {
+                Route::get('', 'index')->name('shop.customers.account.wallet.index');
+
+                Route::get('topup', 'topup')->name('shop.customers.account.wallet.topup');
+
+                Route::post('topup', 'storeTopup')->name('shop.customers.account.wallet.topup.store');
             });
 
             /**

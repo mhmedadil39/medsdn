@@ -2,14 +2,29 @@
 
 namespace Webkul\BankTransfer\Repositories;
 
+use Illuminate\Container\Container;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
+use Webkul\BankTransfer\Events\PaymentApproved;
+use Webkul\BankTransfer\Events\PaymentProofUploaded;
+use Webkul\BankTransfer\Events\PaymentRejected;
+use Webkul\Payment\Actions\RejectManualPaymentAction;
 use Webkul\BankTransfer\Contracts\BankTransferPayment;
 use Webkul\Core\Eloquent\Repository;
+use Webkul\Payment\Actions\ApproveManualPaymentAction;
 
 class BankTransferRepository extends Repository
 {
+    public function __construct(
+        protected ApproveManualPaymentAction $approveManualPaymentAction,
+        protected RejectManualPaymentAction $rejectManualPaymentAction,
+        Container $container
+    ) {
+        parent::__construct($container);
+    }
+
     /**
      * Specify Model class name
      *
@@ -34,8 +49,14 @@ class BankTransferRepository extends Repository
             // Set default values
             $data['method_code'] = $data['method_code'] ?? 'banktransfer';
             $data['status'] = $data['status'] ?? 'pending';
+            $data['receipt_disk'] = $data['receipt_disk'] ?? 'private';
+            $data['receipt_name'] = $data['receipt_name'] ?? basename($data['slip_path'] ?? '');
 
-            return parent::create($data);
+            $payment = parent::create($data);
+
+            Event::dispatch(new PaymentProofUploaded($payment));
+
+            return $payment;
         } catch (\Exception $e) {
             throw new \Exception('Failed to create bank transfer payment: '.$e->getMessage());
         }
@@ -98,12 +119,20 @@ class BankTransferRepository extends Repository
             }
 
             return DB::transaction(function () use ($payment, $adminId, $note) {
-                return $payment->update([
+                if ($payment->payment) {
+                    $this->approveManualPaymentAction->handle($payment->payment, $adminId, $note);
+                }
+
+                $updated = $payment->update([
                     'status' => 'approved',
                     'reviewed_by' => $adminId,
                     'reviewed_at' => now(),
                     'admin_note' => $note,
                 ]);
+
+                Event::dispatch(new PaymentApproved($payment->fresh()));
+
+                return $updated;
             });
         } catch (\Exception $e) {
             throw new \Exception('Failed to approve payment: '.$e->getMessage());
@@ -136,12 +165,20 @@ class BankTransferRepository extends Repository
             }
 
             return DB::transaction(function () use ($payment, $adminId, $note) {
-                return $payment->update([
+                if ($payment->payment) {
+                    $this->rejectManualPaymentAction->handle($payment->payment, $adminId, $note, $note);
+                }
+
+                $updated = $payment->update([
                     'status' => 'rejected',
                     'reviewed_by' => $adminId,
                     'reviewed_at' => now(),
                     'admin_note' => $note,
                 ]);
+
+                Event::dispatch(new PaymentRejected($payment->fresh()));
+
+                return $updated;
             });
         } catch (\Exception $e) {
             throw new \Exception('Failed to reject payment: '.$e->getMessage());

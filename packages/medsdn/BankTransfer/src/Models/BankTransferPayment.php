@@ -4,9 +4,9 @@ namespace Webkul\BankTransfer\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Storage;
 use Webkul\BankTransfer\Contracts\BankTransferPayment as BankTransferPaymentContract;
 use Webkul\Customer\Models\CustomerProxy;
+use Webkul\Payment\Models\Payment;
 use Webkul\Sales\Models\OrderProxy;
 use Webkul\User\Models\AdminProxy;
 
@@ -25,11 +25,17 @@ class BankTransferPayment extends Model implements BankTransferPaymentContract
      * @var array
      */
     protected $fillable = [
+        'payment_id',
         'order_id',
         'customer_id',
         'method_code',
         'transaction_reference',
         'slip_path',
+        'receipt_disk',
+        'receipt_name',
+        'receipt_mime',
+        'receipt_size',
+        'bank_account_key',
         'status',
         'reviewed_by',
         'reviewed_at',
@@ -43,7 +49,13 @@ class BankTransferPayment extends Model implements BankTransferPaymentContract
      */
     protected $casts = [
         'reviewed_at' => 'datetime',
+        'receipt_size' => 'integer',
     ];
+
+    public function payment(): BelongsTo
+    {
+        return $this->belongsTo(Payment::class, 'payment_id');
+    }
 
     /**
      * Get the order associated with this payment.
@@ -110,13 +122,13 @@ class BankTransferPayment extends Model implements BankTransferPaymentContract
      */
     public function getSlipUrlAttribute(): string
     {
-        if (empty($this->slip_path)) {
+        if (empty($this->slip_path) && empty($this->receipt_name)) {
             return '';
         }
 
         // Return route to secure download endpoint instead of direct Storage::url()
         // since files are on private disk
-        return route('admin.bank_transfer.download', ['id' => $this->id]);
+        return route('admin.sales.bank-transfers.file', ['id' => $this->id]);
     }
 
     /**

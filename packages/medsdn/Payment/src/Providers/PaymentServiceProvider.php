@@ -15,7 +15,9 @@ class PaymentServiceProvider extends ServiceProvider
     {
         include __DIR__.'/../Http/helpers.php';
 
-        $this->app->register(EventServiceProvider::class);
+        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadRoutesFrom(__DIR__.'/../Routes/admin-routes.php');
+        $this->loadViewsFrom(__DIR__.'/../Resources/views', 'payment');
     }
 
     /**
@@ -25,6 +27,9 @@ class PaymentServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->register(ModuleServiceProvider::class);
+        $this->app->register(EventServiceProvider::class);
+
         $this->registerConfig();
     }
 
@@ -37,6 +42,18 @@ class PaymentServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(
             dirname(__DIR__).'/Config/paymentmethods.php', 'payment_methods'
+        );
+
+        $this->mergeConfigFrom(
+            dirname(__DIR__).'/Config/system.php', 'core'
+        );
+
+        $this->mergeConfigFrom(
+            dirname(__DIR__).'/Config/menu.php', 'menu.admin'
+        );
+
+        $this->mergeConfigFrom(
+            dirname(__DIR__).'/Config/acl.php', 'acl'
         );
     }
 }

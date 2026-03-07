@@ -16,31 +16,39 @@
     </div>
 
     <div class="flex gap-2.5 mt-3.5 max-xl:flex-wrap">
-        <!-- Order Information -->
+        <!-- Linked Entity Information -->
         <div class="flex flex-col gap-2 flex-1 max-xl:flex-auto">
             <div class="bg-white dark:bg-gray-900 rounded box-shadow">
                 <p class="text-gray-800 dark:text-white font-semibold mb-4 p-4 border-b dark:border-gray-800">
-                    @lang('banktransfer::app.admin.view.order-info')
+                    {{ $payment->order ? __('banktransfer::app.admin.view.order-info') : 'Linked entity' }}
                 </p>
 
                 <div class="p-4 space-y-3">
-                    <div class="flex justify-between">
-                        <span class="text-gray-600 dark:text-gray-300">@lang('banktransfer::app.admin.view.order-number'):</span>
-                        <a href="{{ route('admin.sales.orders.view', $payment->order_id) }}" class="text-blue-600">
-                            #{{ $payment->order->increment_id }}
-                        </a>
-                    </div>
+                    @if ($payment->order)
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">@lang('banktransfer::app.admin.view.order-number'):</span>
+                            <a href="{{ route('admin.sales.orders.view', $payment->order_id) }}" class="text-blue-600">
+                                #{{ $payment->order->increment_id }}
+                            </a>
+                        </div>
+                    @else
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Purpose:</span>
+                            <span>{{ ucfirst(str_replace('_', ' ', $payment->payment?->purpose?->value ?? 'wallet_topup')) }}</span>
+                        </div>
+                    @endif
+
                     <div class="flex justify-between">
                         <span class="text-gray-600 dark:text-gray-300">@lang('banktransfer::app.admin.view.customer'):</span>
                         <span>{{ $payment->customer?->name ?? '-' }}</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-gray-600 dark:text-gray-300">@lang('banktransfer::app.admin.view.order-total'):</span>
-                        <span>{{ core()->formatBasePrice($payment->order->base_grand_total) }}</span>
+                        <span class="text-gray-600 dark:text-gray-300">{{ $payment->order ? __('banktransfer::app.admin.view.order-total') : 'Amount' }}:</span>
+                        <span>{{ core()->formatBasePrice((float) ($payment->order->base_grand_total ?? $payment->payment?->amount ?? 0)) }}</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-gray-600 dark:text-gray-300">@lang('banktransfer::app.admin.view.order-date'):</span>
-                        <span>{{ $payment->order->created_at->format('Y-m-d H:i') }}</span>
+                        <span class="text-gray-600 dark:text-gray-300">{{ $payment->order ? __('banktransfer::app.admin.view.order-date') : 'Requested at' }}:</span>
+                        <span>{{ ($payment->order?->created_at ?? $payment->created_at)?->format('Y-m-d H:i') }}</span>
                     </div>
                 </div>
             </div>
@@ -56,6 +64,12 @@
                         <span class="text-gray-600 dark:text-gray-300">@lang('banktransfer::app.admin.view.transaction-ref'):</span>
                         <span>{{ $payment->transaction_reference ?: '-' }}</span>
                     </div>
+                    @if ($payment->payment)
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Generic payment status:</span>
+                            <span>{{ ucfirst(str_replace('_', ' ', $payment->payment->status->value)) }}</span>
+                        </div>
+                    @endif
                     <div class="flex justify-between">
                         <span class="text-gray-600 dark:text-gray-300">@lang('banktransfer::app.admin.view.upload-date'):</span>
                         <span>{{ $payment->created_at->format('Y-m-d H:i') }}</span>

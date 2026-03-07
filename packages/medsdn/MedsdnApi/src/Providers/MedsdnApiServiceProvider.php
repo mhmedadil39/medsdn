@@ -99,6 +99,8 @@ class MedsdnApiServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->register(ModuleServiceProvider::class);
+
         $this->app->singleton(StorefrontKeyService::class, function ($app) {
             return new StorefrontKeyService;
         });

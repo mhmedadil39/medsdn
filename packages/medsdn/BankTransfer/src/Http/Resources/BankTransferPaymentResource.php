@@ -17,6 +17,7 @@ class BankTransferPaymentResource extends JsonResource
         return [
             'id' => $this->id,
             'order_id' => $this->order_id,
+            'payment_id' => $this->payment_id,
             'order' => $this->when($this->relationLoaded('order'), function () {
                 return [
                     'id' => $this->order->id,
@@ -32,6 +33,7 @@ class BankTransferPaymentResource extends JsonResource
             'transaction_reference' => $this->transaction_reference,
             'status' => $this->status,
             'status_label' => $this->getStatusLabel(),
+            'payment_status' => $this->payment?->status?->value ?? null,
             'reviewed_by' => $this->reviewed_by,
             'reviewer' => $this->when($this->relationLoaded('reviewer') && $this->reviewer, function () {
                 return [

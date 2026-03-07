@@ -1,0 +1,30 @@
+{
+    "name": "medsdn/laravel-wallet",
+    "description": "Customer wallet domain for MedSDN",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "MedSDN",
+            "email": "support@medsdn.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Webkul\\Wallet\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Webkul\\Wallet\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Webkul\\Wallet\\Providers\\WalletServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

@@ -18,6 +18,7 @@ uses(Webkul\Core\Tests\CoreTestCase::class)->in('../packages/medsdn/Core/tests')
 uses(Webkul\DataGrid\Tests\DataGridTestCase::class)->in('../packages/medsdn/DataGrid/tests');
 uses(Webkul\Installer\Tests\InstallerTestCase::class)->in('../packages/medsdn/Installer/tests');
 uses(Webkul\Shop\Tests\ShopTestCase::class)->in('../packages/medsdn/Shop/tests');
+uses(Webkul\Core\Tests\CoreTestCase::class)->in('../packages/medsdn/Wallet/tests');
 
 /*
 |--------------------------------------------------------------------------

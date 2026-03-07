@@ -37,6 +37,8 @@ class Payment
                     'description' => $paymentMethod->getDescription(),
                     'sort' => $paymentMethod->getSortOrder(),
                     'image' => $paymentMethod->getImage(),
+                    'is_allowed' => true,
+                    'additional_data' => $paymentMethod->getAdditionalDetails(),
                 ];
             }
         }
@@ -50,6 +52,20 @@ class Payment
         });
 
         return $paymentMethods;
+    }
+
+    /**
+     * Returns a payment method instance by code.
+     */
+    public function getPaymentMethod(string $code)
+    {
+        $paymentMethodConfig = Config::get('payment_methods.'.$code);
+
+        if (! $paymentMethodConfig || empty($paymentMethodConfig['class'])) {
+            return null;
+        }
+
+        return app($paymentMethodConfig['class']);
     }
 
     /**

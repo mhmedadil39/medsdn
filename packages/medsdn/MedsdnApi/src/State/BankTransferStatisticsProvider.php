@@ -27,7 +27,9 @@ class BankTransferStatisticsProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
         try {
-            $customer = Auth::guard('customer')->user();
+            $customer = Auth::guard('sanctum')->user()
+                ?: Auth::guard('api')->user()
+                ?: Auth::guard('customer')->user();
 
             if (! $customer) {
                 throw new AuthenticationException(
@@ -61,9 +63,13 @@ class BankTransferStatisticsProvider implements ProviderInterface
         } catch (AuthenticationException $e) {
             throw $e;
         } catch (\Exception $e) {
+            $resolvedCustomer = Auth::guard('sanctum')->user()
+                ?: Auth::guard('api')->user()
+                ?: Auth::guard('customer')->user();
+
             Log::error('Bank Transfer API - Get Statistics Error', [
                 'error' => $e->getMessage(),
-                'customer_id' => Auth::guard('customer')->id(),
+                'customer_id' => $resolvedCustomer->id ?? null,
             ]);
 
             throw new OperationFailedException(

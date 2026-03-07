@@ -8,6 +8,7 @@ use Webkul\Admin\Http\Controllers\Settings\ExchangeRateController;
 use Webkul\Admin\Http\Controllers\Settings\InventorySourceController;
 use Webkul\Admin\Http\Controllers\Settings\LocaleController;
 use Webkul\Admin\Http\Controllers\Settings\RoleController;
+use Webkul\Admin\Http\Controllers\Settings\SettingsController;
 use Webkul\Admin\Http\Controllers\Settings\Tax\TaxCategoryController;
 use Webkul\Admin\Http\Controllers\Settings\Tax\TaxRateController;
 use Webkul\Admin\Http\Controllers\Settings\ThemeController;
@@ -17,6 +18,10 @@ use Webkul\Admin\Http\Controllers\Settings\UserController;
  * Settings routes.
  */
 Route::prefix('settings')->group(function () {
+    Route::controller(SettingsController::class)->group(function () {
+        Route::get('', 'index')->name('admin.settings.index');
+    });
+
     /**
      * Channels routes.
      */

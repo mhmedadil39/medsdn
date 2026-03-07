@@ -11,5 +11,7 @@ class ModuleServiceProvider extends CoreModuleServiceProvider
      *
      * @var array
      */
-    protected $models = [];
+    protected $models = [
+        \Webkul\Payment\Models\Payment::class,
+    ];
 }

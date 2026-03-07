@@ -14,10 +14,12 @@ use Webkul\Core\Models\ChannelProxy;
 use Webkul\Core\Models\SubscribersListProxy;
 use Webkul\Customer\Contracts\Customer as CustomerContract;
 use Webkul\Customer\Database\Factories\CustomerFactory;
+use Webkul\Payment\Models\Payment;
 use Webkul\Product\Models\ProductReviewProxy;
 use Webkul\Sales\Models\InvoiceProxy;
 use Webkul\Sales\Models\OrderProxy;
 use Webkul\Shop\Mail\Customer\ResetPasswordNotification;
+use Webkul\Wallet\Models\Wallet;
 
 class Customer extends Authenticatable implements CustomerContract
 {
@@ -177,6 +179,22 @@ class Customer extends Authenticatable implements CustomerContract
     public function invoices()
     {
         return $this->hasManyThrough(InvoiceProxy::modelClass(), OrderProxy::modelClass());
+    }
+
+    /**
+     * Customer wallet.
+     */
+    public function wallet()
+    {
+        return $this->hasOne(Wallet::class, 'customer_id');
+    }
+
+    /**
+     * Generic payment records.
+     */
+    public function payments()
+    {
+        return $this->hasMany(Payment::class, 'customer_id');
     }
 
     /**
