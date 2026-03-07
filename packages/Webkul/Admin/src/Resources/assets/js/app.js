@@ -24,7 +24,7 @@ window.app = createApp({
         window.addEventListener('click', this.handleFocusOut);
     },
 
-    beforeDestroy() {
+    beforeUnmount() {
         window.removeEventListener('click', this.handleFocusOut);
     },
 
@@ -135,10 +135,8 @@ window.app = createApp({
 
             if (parentElement.classList.contains('sidebar-collapsed')) {
                 parentElement.classList.remove('sidebar-collapsed');
-
                 parentElement.classList.add('sidebar-not-collapsed');
             }
-
         },
 
         handleMouseLeave(event) {
@@ -150,7 +148,6 @@ window.app = createApp({
 
             if (parentElement.classList.contains('sidebar-not-collapsed')) {
                 parentElement.classList.remove('sidebar-not-collapsed');
-
                 parentElement.classList.add('sidebar-collapsed');
             }
         },
@@ -159,8 +156,8 @@ window.app = createApp({
             const sidebar = this.$refs.sidebar;
 
             if (
-                sidebar &&
-                !sidebar.contains(event.target)
+                sidebar
+                && ! sidebar.contains(event.target)
             ) {
                 this.isMenuActive = false;
 
@@ -168,7 +165,6 @@ window.app = createApp({
 
                 if (parentElement.classList.contains('sidebar-not-collapsed')) {
                     parentElement.classList.remove('sidebar-not-collapsed');
-
                     parentElement.classList.add('sidebar-collapsed');
                 }
             }
@@ -181,33 +177,37 @@ window.app = createApp({
  */
 import Admin from "./plugins/admin";
 import Axios from "./plugins/axios";
+import CreateElement from "./plugins/createElement";
 import Emitter from "./plugins/emitter";
 import Flatpickr from "./plugins/flatpickr";
 import VeeValidate from "./plugins/vee-validate";
-import CreateElement from "./plugins/createElement";
 import Draggable from "./plugins/draggable";
-import VueCal from "./plugins/vue-cal";
+import VueCal from 'vue-cal';
+import 'vue-cal/dist/vuecal.css';
+
+app.component('vue-cal', VueCal);
 
 [
     Admin,
     Axios,
-    Emitter,
     CreateElement,
-    Draggable,
+    Emitter,
     Flatpickr,
     VeeValidate,
-    VueCal,
+    Draggable,
 ].forEach((plugin) => app.use(plugin));
 
 /**
  * Global directives.
  */
+import Slugify from "./directives/slugify";
+import SlugifyTarget from "./directives/slugify-target";
 import Debounce from "./directives/debounce";
-import DOMPurify from "./directives/dompurify";
-import ToolTip from "./directives/tooltip";
+import Code from "./directives/code";
 
+app.directive("slugify", Slugify);
+app.directive("slugify-target", SlugifyTarget);
 app.directive("debounce", Debounce);
-app.directive("safe-html", DOMPurify);
-app.directive("tooltip", ToolTip);
+app.directive("code", Code);
 
 export default app;

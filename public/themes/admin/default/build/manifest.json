@@ -264,7 +264,7 @@
     "isDynamicEntry": true
   },
   "src/Resources/assets/css/app.css": {
-    "file": "assets/app-DxbqLJkj.css",
+    "file": "assets/app-7LOY5Xg6.css",
     "src": "src/Resources/assets/css/app.css",
     "isEntry": true
   },
@@ -272,21 +272,25 @@
     "file": "assets/bagisto-admin-BzOkv6lg.woff",
     "src": "src/Resources/assets/fonts/bagisto-admin.woff"
   },
+  "src/Resources/assets/fonts/icomoon.woff": {
+    "file": "assets/icomoon-BbY1GX-d.woff",
+    "src": "src/Resources/assets/fonts/icomoon.woff"
+  },
   "src/Resources/assets/images/average-orders.svg": {
     "file": "assets/average-orders-UpY6pgyW.svg",
     "src": "src/Resources/assets/images/average-orders.svg"
   },
-  "src/Resources/assets/images/configuration/default-menu.svg": {
-    "file": "assets/default-menu-Dj-Oltdo.svg",
-    "src": "src/Resources/assets/images/configuration/default-menu.svg"
-  },
-  "src/Resources/assets/images/configuration/side-bar-menu.svg": {
-    "file": "assets/side-bar-menu-AbcRgqJb.svg",
-    "src": "src/Resources/assets/images/configuration/side-bar-menu.svg"
+  "src/Resources/assets/images/corner-clip.svg": {
+    "file": "assets/corner-clip-CRLTKrCT.svg",
+    "src": "src/Resources/assets/images/corner-clip.svg"
   },
   "src/Resources/assets/images/customers.svg": {
     "file": "assets/customers-BfcJGhnh.svg",
     "src": "src/Resources/assets/images/customers.svg"
+  },
+  "src/Resources/assets/images/dark-corner-clip.svg": {
+    "file": "assets/dark-corner-clip-Deux0RQO.svg",
+    "src": "src/Resources/assets/images/dark-corner-clip.svg"
   },
   "src/Resources/assets/images/dark-logo.svg": {
     "file": "assets/dark-logo-P5H7MBtx.svg",
@@ -360,9 +364,17 @@
     "file": "assets/zoom-CynTuPTI.svg",
     "src": "src/Resources/assets/images/product-placeholders/zoom.svg"
   },
+  "src/Resources/assets/images/settings/activities.svg": {
+    "file": "assets/activities-DpB2XKqX.svg",
+    "src": "src/Resources/assets/images/settings/activities.svg"
+  },
   "src/Resources/assets/images/settings/address.svg": {
     "file": "assets/address-DH7M3lNY.svg",
     "src": "src/Resources/assets/images/settings/address.svg"
+  },
+  "src/Resources/assets/images/settings/calls.svg": {
+    "file": "assets/calls-BU_UfDax.svg",
+    "src": "src/Resources/assets/images/settings/calls.svg"
   },
   "src/Resources/assets/images/settings/captcha.svg": {
     "file": "assets/captcha-CcuSNj-t.svg",
@@ -372,9 +384,25 @@
     "file": "assets/checkout-BvqH__Gi.svg",
     "src": "src/Resources/assets/images/settings/checkout.svg"
   },
+  "src/Resources/assets/images/settings/default.svg": {
+    "file": "assets/default-DBulZ5O_.svg",
+    "src": "src/Resources/assets/images/settings/default.svg"
+  },
+  "src/Resources/assets/images/settings/description.svg": {
+    "file": "assets/description-BwifbkWG.svg",
+    "src": "src/Resources/assets/images/settings/description.svg"
+  },
   "src/Resources/assets/images/settings/email.svg": {
     "file": "assets/email-5AJwT575.svg",
     "src": "src/Resources/assets/images/settings/email.svg"
+  },
+  "src/Resources/assets/images/settings/emails.svg": {
+    "file": "assets/emails-D_qEBj20.svg",
+    "src": "src/Resources/assets/images/settings/emails.svg"
+  },
+  "src/Resources/assets/images/settings/files.svg": {
+    "file": "assets/files-Xm-jQ6Fi.svg",
+    "src": "src/Resources/assets/images/settings/files.svg"
   },
   "src/Resources/assets/images/settings/inventory.svg": {
     "file": "assets/inventory-D1uKZcKj.svg",
@@ -384,21 +412,53 @@
     "file": "assets/invoice-qNYgi9ea.svg",
     "src": "src/Resources/assets/images/settings/invoice.svg"
   },
+  "src/Resources/assets/images/settings/lunches.svg": {
+    "file": "assets/lunches-BHeSbGQ3.svg",
+    "src": "src/Resources/assets/images/settings/lunches.svg"
+  },
   "src/Resources/assets/images/settings/magic-ai.svg": {
     "file": "assets/magic-ai-C0gXN1sk.svg",
     "src": "src/Resources/assets/images/settings/magic-ai.svg"
+  },
+  "src/Resources/assets/images/settings/meetings.svg": {
+    "file": "assets/meetings-Cwj897qL.svg",
+    "src": "src/Resources/assets/images/settings/meetings.svg"
+  },
+  "src/Resources/assets/images/settings/notes.svg": {
+    "file": "assets/notes-BdIILF0F.svg",
+    "src": "src/Resources/assets/images/settings/notes.svg"
   },
   "src/Resources/assets/images/settings/order.svg": {
     "file": "assets/order-Bj8Kur9c.svg",
     "src": "src/Resources/assets/images/settings/order.svg"
   },
+  "src/Resources/assets/images/settings/organizations.svg": {
+    "file": "assets/organizations-aUdNng-O.svg",
+    "src": "src/Resources/assets/images/settings/organizations.svg"
+  },
   "src/Resources/assets/images/settings/payment-method.svg": {
     "file": "assets/payment-method-Bu6ybGKX.svg",
     "src": "src/Resources/assets/images/settings/payment-method.svg"
   },
+  "src/Resources/assets/images/settings/pipedrive.svg": {
+    "file": "assets/pipedrive-Dk_Mji0J.svg",
+    "src": "src/Resources/assets/images/settings/pipedrive.svg"
+  },
+  "src/Resources/assets/images/settings/plans.svg": {
+    "file": "assets/plans-DIcOmGwv.svg",
+    "src": "src/Resources/assets/images/settings/plans.svg"
+  },
   "src/Resources/assets/images/settings/product.svg": {
     "file": "assets/product-CoE-Gk7v.svg",
     "src": "src/Resources/assets/images/settings/product.svg"
+  },
+  "src/Resources/assets/images/settings/products.svg": {
+    "file": "assets/products-zDh6UFtz.svg",
+    "src": "src/Resources/assets/images/settings/products.svg"
+  },
+  "src/Resources/assets/images/settings/quotes.svg": {
+    "file": "assets/quotes-0H7ZCVr6.svg",
+    "src": "src/Resources/assets/images/settings/quotes.svg"
   },
   "src/Resources/assets/images/settings/settings.svg": {
     "file": "assets/settings-DhKa03Cc.svg",
@@ -428,6 +488,10 @@
     "file": "assets/theme-Bwf_p88V.svg",
     "src": "src/Resources/assets/images/settings/theme.svg"
   },
+  "src/Resources/assets/images/settings/users.svg": {
+    "file": "assets/users-6trD5il1.svg",
+    "src": "src/Resources/assets/images/settings/users.svg"
+  },
   "src/Resources/assets/images/spinner.svg": {
     "file": "assets/spinner-CkjnFMgn.svg",
     "src": "src/Resources/assets/images/spinner.svg"
@@ -445,7 +509,7 @@
     "src": "src/Resources/assets/images/unpaid-invoices.svg"
   },
   "src/Resources/assets/js/app.js": {
-    "file": "assets/app-DJP0iOXV.js",
+    "file": "assets/app-BxKIeTni.js",
     "name": "app",
     "src": "src/Resources/assets/js/app.js",
     "isEntry": true,

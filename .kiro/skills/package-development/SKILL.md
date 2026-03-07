@@ -1,9 +1,9 @@
 ---
 name: package-development
-description: "Package development in Bagisto. Activates when creating packages, migrations, models, repositories, routes, controllers, views, localization, DataGrid, menus, ACL, or system configuration. Use references to skills for specific areas: @core, @data, @ui, @features."
+description: "Package development in MedSDN. Activates when creating packages, migrations, models, repositories, routes, controllers, views, localization, DataGrid, menus, ACL, or system configuration. Use references to skills for specific areas: @core, @data, @ui, @features."
 license: MIT
 metadata:
-  author: bagisto
+  author: MedSDN
   references:
     - core: Package structure, service providers, package generator
     - data: Migrations, models (contracts, proxies), repositories
@@ -11,23 +11,23 @@ metadata:
     - features: Localization, DataGrid, menus, ACL, system config
 ---
 
-# Package Development in Bagisto
+# Package Development in MedSDN
 
 ## Overview
 
-A package is a self-contained module that encapsulates specific features or functionality in Bagisto. This comprehensive skill covers all aspects of package development from structure to advanced features.
+A package is a self-contained module that encapsulates specific features or functionality in MedSDN. This comprehensive skill covers all aspects of package development from structure to advanced features.
 
 ## When to Apply
 
 Activate this skill when:
-- Creating new packages for Bagisto
+- Creating new packages for MedSDN
 - Setting up package directory structure
 - Creating database migrations
 - Building Eloquent models with contracts and proxies
 - Implementing repositories for data access
 - Creating routes for admin/shop sections
 - Building controllers with dependency injection
-- Creating Blade views with Bagisto layouts
+- Creating Blade views with MedSDN layouts
 - Adding multi-language support
 - Creating admin DataGrid tables
 - Setting up admin navigation menus
@@ -350,9 +350,9 @@ php artisan migrate:status
 
 ## Models
 
-### Bagisto Model Architecture
+### MedSDN Model Architecture
 
-Bagisto uses a three-component model system:
+MedSDN uses a three-component model system:
 1. **Contract** - Interface defining the public API
 2. **Model** - Eloquent model implementation
 3. **Proxy** - Runtime model resolution via Concord
@@ -360,7 +360,7 @@ Bagisto uses a three-component model system:
 ### Creating Model Components
 
 ```bash
-# Using Bagisto generator (creates all three)
+# Using MedSDN generator (creates all three)
 php artisan package:make-model ReturnRequest Webkul/RMA
 ```
 
@@ -438,7 +438,7 @@ class ReturnRequest extends Model implements ReturnRequestContract
 
 ### Repository Pattern
 
-Bagisto uses the Prettus L5 Repository package for data access abstraction.
+MedSDN uses the Prettus L5 Repository package for data access abstraction.
 
 ### Creating Repositories
 

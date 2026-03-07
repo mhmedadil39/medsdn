@@ -63,6 +63,26 @@ class PaymentMethodsProvider implements ProviderInterface
             $output->icon = $method_data['image'] ?? null;
             $output->isAllowed = $method_data['is_allowed'] ?? true;
             $output->additionalData = $method_data['additional_data'] ?? null;
+
+            // Add bank transfer specific data
+            if ($output->method === 'banktransfer') {
+                $paymentMethod = Payment::getPaymentMethod('banktransfer');
+                if ($paymentMethod) {
+                    // Merge new data with existing additional_data to preserve existing keys
+                    $bankTransferData = [
+                        'bank_accounts' => $paymentMethod->getBankAccounts(),
+                        'instructions' => core()->getConfigData('sales.payment_methods.banktransfer.instructions'),
+                        'max_file_size' => '4MB',
+                        'allowed_file_types' => ['jpg', 'jpeg', 'png', 'webp', 'pdf'],
+                    ];
+                    
+                    $output->additionalData = array_merge(
+                        $output->additionalData ?? [],
+                        $bankTransferData
+                    );
+                }
+            }
+
             $outputs[] = $output;
         }
 

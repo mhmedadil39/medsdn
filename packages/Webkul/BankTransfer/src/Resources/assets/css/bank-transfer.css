@@ -1,0 +1,619 @@
+/**
+ * Bank Transfer Payment Method Styles
+ * 
+ * This stylesheet provides custom styling for the Bank Transfer payment method package.
+ * It includes styles for bank account cards, file upload zones, status badges, and admin views.
+ * All styles are designed to be responsive and support both LTR and RTL layouts.
+ */
+
+/* ============================================
+   Bank Account Cards
+   ============================================ */
+
+.bank-account-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+
+.bank-account-card:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-color: #3b82f6;
+}
+
+.bank-account-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.bank-account-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.bank-account-card__badge {
+    background-color: #dbeafe;
+    color: #1e40af;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.bank-account-card__details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.bank-account-card__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+}
+
+.bank-account-card__label {
+    color: #6b7280;
+}
+
+.bank-account-card__value {
+    color: #1f2937;
+    font-family: 'Courier New', monospace;
+}
+
+.bank-account-card__copy-btn {
+    background: none;
+    border: none;
+    color: #3b82f6;
+    cursor: pointer;
+    padding: 0.25rem;
+    transition: color 0.2s ease;
+}
+
+.bank-account-card__copy-btn:hover {
+    color: #1e40af;
+}
+
+.bank-account-card__copy-btn:active {
+    transform: scale(0.95);
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .bank-account-card {
+        background: #1f2937;
+        border-color: #374151;
+    }
+
+    .bank-account-card:hover {
+        border-color: #60a5fa;
+    }
+
+    .bank-account-card__title {
+        color: #f9fafb;
+    }
+
+    .bank-account-card__badge {
+        background-color: #1e3a8a;
+        color: #93c5fd;
+    }
+
+    .bank-account-card__label {
+        color: #9ca3af;
+    }
+
+    .bank-account-card__value {
+        color: #e5e7eb;
+    }
+
+    .bank-account-card__copy-btn {
+        color: #60a5fa;
+    }
+
+    .bank-account-card__copy-btn:hover {
+        color: #93c5fd;
+    }
+}
+
+/* ============================================
+   File Upload Zone
+   ============================================ */
+
+.file-upload-zone {
+    border: 2px dashed #d1d5db;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background-color: #f9fafb;
+}
+
+.file-upload-zone:hover {
+    border-color: #3b82f6;
+    background-color: #eff6ff;
+}
+
+.file-upload-zone--dragging {
+    border-color: #3b82f6;
+    background-color: #dbeafe;
+}
+
+.file-upload-zone__icon {
+    width: 3rem;
+    height: 3rem;
+    margin: 0 auto 1rem;
+    color: #9ca3af;
+}
+
+.file-upload-zone__text {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+}
+
+.file-upload-zone__link {
+    color: #3b82f6;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.file-upload-zone__link:hover {
+    color: #1e40af;
+    text-decoration: underline;
+}
+
+.file-upload-zone__hint {
+    font-size: 0.75rem;
+    color: #9ca3af;
+}
+
+.file-upload-zone__preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    background: #ffffff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.file-upload-zone__preview-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.file-upload-zone__preview-icon--pdf {
+    color: #dc2626;
+}
+
+.file-upload-zone__preview-icon--image {
+    color: #3b82f6;
+}
+
+.file-upload-zone__preview-info {
+    flex: 1;
+    text-align: left;
+}
+
+.file-upload-zone__preview-name {
+    font-weight: 500;
+    color: #1f2937;
+    font-size: 0.875rem;
+}
+
+.file-upload-zone__preview-size {
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.file-upload-zone__remove-btn {
+    background: none;
+    border: none;
+    color: #dc2626;
+    cursor: pointer;
+    padding: 0.25rem;
+    transition: color 0.2s ease;
+}
+
+.file-upload-zone__remove-btn:hover {
+    color: #991b1b;
+}
+
+.file-upload-zone__error {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #dc2626;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .file-upload-zone {
+        background-color: #1f2937;
+        border-color: #4b5563;
+    }
+
+    .file-upload-zone:hover {
+        background-color: #1e3a8a;
+        border-color: #60a5fa;
+    }
+
+    .file-upload-zone--dragging {
+        background-color: #1e3a8a;
+        border-color: #60a5fa;
+    }
+
+    .file-upload-zone__icon {
+        color: #6b7280;
+    }
+
+    .file-upload-zone__text {
+        color: #9ca3af;
+    }
+
+    .file-upload-zone__link {
+        color: #60a5fa;
+    }
+
+    .file-upload-zone__link:hover {
+        color: #93c5fd;
+    }
+
+    .file-upload-zone__hint {
+        color: #6b7280;
+    }
+
+    .file-upload-zone__preview {
+        background: #374151;
+    }
+
+    .file-upload-zone__preview-name {
+        color: #f9fafb;
+    }
+
+    .file-upload-zone__preview-size {
+        color: #9ca3af;
+    }
+
+    .file-upload-zone__remove-btn {
+        color: #f87171;
+    }
+
+    .file-upload-zone__remove-btn:hover {
+        color: #fca5a5;
+    }
+
+    .file-upload-zone__error {
+        color: #f87171;
+    }
+}
+
+/* ============================================
+   Status Badges
+   ============================================ */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-badge--pending {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.status-badge--approved {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.status-badge--rejected {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.status-badge__icon {
+    width: 0.875rem;
+    height: 0.875rem;
+    margin-right: 0.375rem;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .status-badge--pending {
+        background-color: #78350f;
+        color: #fde68a;
+    }
+
+    .status-badge--approved {
+        background-color: #064e3b;
+        color: #6ee7b7;
+    }
+
+    .status-badge--rejected {
+        background-color: #7f1d1d;
+        color: #fca5a5;
+    }
+}
+
+/* ============================================
+   Admin Detail View
+   ============================================ */
+
+.payment-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.payment-detail__section {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.payment-detail__header {
+    background: #f9fafb;
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.payment-detail__title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+}
+
+.payment-detail__content {
+    padding: 1rem;
+}
+
+.payment-detail__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.payment-detail__row:last-child {
+    border-bottom: none;
+}
+
+.payment-detail__label {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.payment-detail__value {
+    color: #1f2937;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.payment-detail__note {
+    background: #f9fafb;
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #374151;
+    line-height: 1.5;
+}
+
+.payment-detail__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+}
+
+.payment-detail__button {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.payment-detail__button--primary {
+    background-color: #3b82f6;
+    color: #ffffff;
+}
+
+.payment-detail__button--primary:hover {
+    background-color: #2563eb;
+}
+
+.payment-detail__button--secondary {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.payment-detail__button--secondary:hover {
+    background-color: #e5e7eb;
+}
+
+.payment-detail__button--danger {
+    background-color: #dc2626;
+    color: #ffffff;
+}
+
+.payment-detail__button--danger:hover {
+    background-color: #b91c1c;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .payment-detail__section {
+        background: #1f2937;
+        border-color: #374151;
+    }
+
+    .payment-detail__header {
+        background: #111827;
+        border-color: #374151;
+    }
+
+    .payment-detail__title {
+        color: #f9fafb;
+    }
+
+    .payment-detail__row {
+        border-color: #374151;
+    }
+
+    .payment-detail__label {
+        color: #9ca3af;
+    }
+
+    .payment-detail__value {
+        color: #e5e7eb;
+    }
+
+    .payment-detail__note {
+        background: #111827;
+        color: #d1d5db;
+    }
+
+    .payment-detail__button--primary {
+        background-color: #2563eb;
+    }
+
+    .payment-detail__button--primary:hover {
+        background-color: #1d4ed8;
+    }
+
+    .payment-detail__button--secondary {
+        background-color: #374151;
+        color: #e5e7eb;
+    }
+
+    .payment-detail__button--secondary:hover {
+        background-color: #4b5563;
+    }
+
+    .payment-detail__button--danger {
+        background-color: #b91c1c;
+    }
+
+    .payment-detail__button--danger:hover {
+        background-color: #991b1b;
+    }
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+
+@media (max-width: 768px) {
+    .bank-account-card {
+        padding: 0.75rem;
+    }
+
+    .bank-account-card__row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+
+    .file-upload-zone {
+        padding: 1.5rem 1rem;
+    }
+
+    .payment-detail__row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+}
+
+/* ============================================
+   RTL Support
+   ============================================ */
+
+[dir="rtl"] .bank-account-card__copy-btn {
+    margin-left: 0;
+    margin-right: 0.5rem;
+}
+
+[dir="rtl"] .status-badge__icon {
+    margin-right: 0;
+    margin-left: 0.375rem;
+}
+
+[dir="rtl"] .file-upload-zone__preview-info {
+    text-align: right;
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+
+@media print {
+    .bank-account-card__copy-btn,
+    .file-upload-zone,
+    .payment-detail__actions {
+        display: none;
+    }
+
+    .payment-detail__section {
+        page-break-inside: avoid; /* Legacy fallback */
+        break-inside: avoid; /* Modern standard */
+    }
+}
+
+/* ============================================
+   Accessibility
+   ============================================ */
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0); /* Legacy fallback */
+    clip-path: inset(50%); /* Modern equivalent */
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Focus styles for keyboard navigation */
+.bank-account-card__copy-btn:focus,
+.file-upload-zone:focus,
+.payment-detail__button:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

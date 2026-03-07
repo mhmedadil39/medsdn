@@ -1,0 +1,36 @@
+{
+    "name": "webkul/bank-transfer",
+    "description": "Bank Transfer Payment Method for MedSDN",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Webkul",
+            "email": "support@webkul.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "illuminate/support": "^11.0",
+        "konekt/concord": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Webkul\\BankTransfer\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Webkul\\BankTransfer\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Webkul\\BankTransfer\\Providers\\BankTransferServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

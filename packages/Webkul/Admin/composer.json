@@ -1,21 +1,18 @@
 {
-    "name": "medsdn/laravel-admin",
+    "name": "bagisto/laravel-admin",
     "license": "MIT",
     "description" : "Admin package",
     "authors": [
         {
-            "name": "MedSDN",
-            "email": "support@medsdn.com"
+            "name": "Bagisto",
+            "email": "support@bagisto.com"
         }
     ],
     "require": {},
     "autoload": {
         "psr-4": {
             "Webkul\\Admin\\": "src/"
-        },
-        "files": [
-            "src/Http/helpers.php"
-        ]
+        }
     },
     "extra": {
         "laravel": {

@@ -81,13 +81,103 @@ Once verified, access the APIs at:
 
 - **REST API (Shop)**: [https://your-domain.com/api/shop/](https://api-demo.medsdn.com/api/shop)
 - **REST API (Admin)**: [https://your-domain.com/api/admin/](https://api-demo.medsdn.com/api/admin)
-- **GraphQL Endpoint**: https://your-domain.com/graphql`
+- **GraphQL Endpoint**: `https://your-domain.com/graphql`
 - **GraphQL Playground**: [https://your-domain.com/graphqli](https://api-demo.medsdn.com/api/graphiql?)
+
+## Features
+
+### Payment Methods
+
+#### Bank Transfer Payment Method
+
+Complete API support for bank transfer payment method with payment proof upload and admin review workflow.
+
+**REST API Endpoints:**
+- `GET /api/shop/bank-transfer/config` - Get bank transfer configuration
+- `POST /api/shop/bank-transfer/upload` - Upload payment proof and create order
+- `GET /api/shop/bank-transfer/payments` - Get customer's payments (authenticated)
+- `GET /api/shop/bank-transfer/payments/{id}` - Get payment details (authenticated)
+- `GET /api/shop/bank-transfer/statistics` - Get payment statistics (authenticated)
+
+**GraphQL Operations:**
+- Query: `bankTransferConfig` - Get configuration
+- Query: `bankTransferPayments` - Get customer's payments
+- Query: `bankTransferPayment(id)` - Get payment details
+- Query: `bankTransferStatistics` - Get statistics
+- Mutation: `uploadBankTransferPayment` - Upload payment proof
+
+**Features:**
+- Secure file upload (JPG, PNG, WEBP, PDF up to 4MB)
+- Bank account information display
+- Transaction reference tracking
+- Payment status tracking (pending, approved, rejected)
+- Rate limiting (5 uploads per minute)
+- Multi-language support (English & Arabic)
+- Comprehensive error handling
+
+**Documentation:**
+- REST API: See `packages/Webkul/BankTransfer/API_DOCUMENTATION.md`
+- GraphQL API: See `packages/Webkul/MedsdnApi/BANK_TRANSFER_GRAPHQL.md`
+
+**Example Usage:**
+
+```bash
+# Get configuration
+curl -X GET "https://your-domain.com/api/shop/bank-transfer/config"
+
+# Upload payment proof
+curl -X POST "https://your-domain.com/api/shop/bank-transfer/upload" \
+  -H "Authorization: Bearer {token}" \
+  -F "payment_proof=@receipt.jpg" \
+  -F "transaction_reference=TXN123456"
+```
+
+**GraphQL Example:**
+
+```graphql
+# Get configuration
+query {
+  bankTransferConfig {
+    success
+    data {
+      title
+      bankAccounts {
+        bankName
+        accountNumber
+      }
+    }
+  }
+}
+
+# Upload payment proof
+mutation {
+  uploadBankTransferPayment(input: {
+    paymentProof: $file
+    transactionReference: "TXN123456"
+    cartToken: "your_cart_token"
+  }) {
+    success
+    message
+    data {
+      order {
+        id
+        incrementId
+      }
+      payment {
+        id
+        status
+      }
+    }
+  }
+}
+```
 
 ## Documentation
 - MedSDN API: [Demo Page](https://api-demo.medsdn.com/api) 
 - API Documentation: [MedSDN API Docs](https://api-docs.medsdn.com/)
 - GraphQL Playground: [Interactive Playground](https://api-demo.medsdn.com/graphiql)
+- Bank Transfer REST API: `packages/Webkul/BankTransfer/API_DOCUMENTATION.md`
+- Bank Transfer GraphQL API: `packages/Webkul/MedsdnApi/BANK_TRANSFER_GRAPHQL.md`
  
 ## Support
 

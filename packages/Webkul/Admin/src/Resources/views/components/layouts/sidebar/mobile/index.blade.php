@@ -1,5 +1,5 @@
 <v-sidebar-drawer>
-    <i class="icon-menu lg:hidden cursor-pointer rounded-md p-1.5 text-2xl hover:bg-gray-100 dark:hover:bg-gray-950 max-lg:block"></i>
+    <i class="icon-menu cursor-pointer rounded-md p-1.5 text-2xl hover:bg-gray-100 dark:hover:bg-gray-950 lg:hidden max-lg:block"></i>
 </v-sidebar-drawer>
 
 @pushOnce('scripts')
@@ -13,7 +13,7 @@
             class="lg:hidden [&>:nth-child(3)]:!m-0 [&>:nth-child(3)]:!rounded-l-none [&>:nth-child(3)]:max-sm:!w-[80%]"
         >
             <x-slot:toggle>
-                <i class="icon-menu lg:hidden cursor-pointer rounded-md p-1.5 text-2xl hover:bg-gray-100 dark:hover:bg-gray-950 max-lg:block"></i>
+                <i class="icon-menu cursor-pointer rounded-md p-1.5 text-2xl hover:bg-gray-100 dark:hover:bg-gray-950 lg:hidden max-lg:block"></i>
             </x-slot>
 
             <x-slot:header>
@@ -27,7 +27,7 @@
                     <img
                         class="h-10"
                         src="{{ request()->cookie('dark_mode') ? bagisto_asset('images/dark-logo.svg') : bagisto_asset('images/logo.svg') }}"
-                        id="logo-image"
+                        data-role="brand-logo"
                         alt="{{ config('app.name') }}"
                     />
                 @endif
@@ -38,10 +38,8 @@
                     <nav class="grid w-full gap-2">
                         @foreach (menu()->getItems('admin') as $menuItem)
                             @php
-                                $hasActiveChild = $menuItem->haveChildren() && collect($menuItem->getChildren())->contains(fn($child) => $child->isActive());
-
+                                $hasActiveChild = $menuItem->haveChildren() && collect($menuItem->getChildren())->contains(fn ($child) => $child->isActive());
                                 $isMenuActive = $menuItem->isActive() == 'active' || $hasActiveChild;
-
                                 $menuKey = $menuItem->getKey();
                             @endphp
 
@@ -52,7 +50,7 @@
                                 <a
                                     href="{{ ! in_array($menuItem->getKey(), ['settings', 'configuration']) && $menuItem->haveChildren() ? 'javascript:void(0)' : $menuItem->getUrl() }}"
                                     class="menu-link flex items-center justify-between rounded-lg p-2 transition-colors duration-200"
-                                    @if ($menuItem->haveChildren() && !in_array($menuKey, ['settings', 'configuration']))
+                                    @if ($menuItem->haveChildren() && ! in_array($menuKey, ['settings', 'configuration']))
                                         @click.prevent="toggleMenu('{{ $menuKey }}')"
                                     @endif
                                     :class="{ 'bg-brandColor text-white': activeMenu === '{{ $menuKey }}' || {{ $isMenuActive ? 'true' : 'false' }}, 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-950': !(activeMenu === '{{ $menuKey }}' || {{ $isMenuActive ? 'true' : 'false' }}) }"
@@ -60,7 +58,7 @@
                                     <div class="flex items-center gap-3">
                                         <span class="{{ $menuItem->getIcon() }} text-2xl"></span>
 
-                                        <p class="whitespace-nowrap font-semibold">{{ $menuItem->getName() }}</p>
+                                        <p class="whitespace-nowrap font-semibold">{{ core()->getConfigData('general.settings.menu.'.$menuItem->getKey()) ?? $menuItem->getName() }}</p>
                                     </div>
 
                                     @if ($menuItem->haveChildren())
@@ -71,17 +69,18 @@
                                     @endif
                                 </a>
 
-                                @if ($menuItem->haveChildren() && !in_array($menuKey, ['settings', 'configuration']))
+                                @if ($menuItem->haveChildren() && ! in_array($menuKey, ['settings', 'configuration']))
                                     <div
                                         class="submenu ml-1 mt-1 overflow-hidden rounded-b-lg border-l-2 transition-all duration-300 dark:border-gray-700"
-                                        :class="{ 'max-h-[500px] py-2 border-l-brandColor bg-gray-50 dark:bg-gray-900': activeMenu === '{{ $menuKey }}' || {{ $hasActiveChild ? 'true' : 'false' }}, 'max-h-0 py-0 border-transparent bg-transparent': activeMenu !== '{{ $menuKey }}' && !{{ $hasActiveChild ? 'true' : 'false' }} }"
+                                        :class="{ 'max-h-[500px] border-l-brandColor bg-gray-50 py-2 dark:bg-gray-900': activeMenu === '{{ $menuKey }}' || {{ $hasActiveChild ? 'true' : 'false' }}, 'max-h-0 border-transparent bg-transparent py-0': activeMenu !== '{{ $menuKey }}' && ! {{ $hasActiveChild ? 'true' : 'false' }} }"
                                     >
                                         @foreach ($menuItem->getChildren() as $subMenuItem)
                                             <a
                                                 href="{{ $subMenuItem->getUrl() }}"
                                                 class="submenu-link block whitespace-nowrap p-2 pl-10 text-sm transition-colors duration-200"
-                                                :class="{ 'text-brandColor font-medium bg-gray-100 dark:bg-gray-800': '{{ $subMenuItem->isActive() }}' === '1', 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800': '{{ $subMenuItem->isActive() }}' !== '1' }">
-                                                {{ $subMenuItem->getName() }}
+                                                :class="{ 'bg-gray-100 font-medium text-brandColor dark:bg-gray-800': '{{ $subMenuItem->isActive() }}' === '1', 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800': '{{ $subMenuItem->isActive() }}' !== '1' }"
+                                            >
+                                                {{ core()->getConfigData('general.settings.menu.'.$subMenuItem->getKey()) ?? $subMenuItem->getName() }}
                                             </a>
                                         @endforeach
                                     </div>
@@ -99,7 +98,9 @@
             template: '#v-sidebar-drawer-template',
 
             data() {
-                return { activeMenu: null };
+                return {
+                    activeMenu: null,
+                };
             },
 
             mounted() {
@@ -113,7 +114,7 @@
             methods: {
                 toggleMenu(menuKey) {
                     this.activeMenu = this.activeMenu === menuKey ? null : menuKey;
-                }
+                },
             },
         });
     </script>
