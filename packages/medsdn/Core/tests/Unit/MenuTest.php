@@ -140,6 +140,6 @@ it('keeps a parent admin menu item when only a child permission is granted', fun
 
     expect($menuItems)->toHaveCount(1);
     expect($menuItems->first()->key)->toBe('sales');
-    expect($menuItems->first()->route)->toBe('admin.sales.orders.index');
+    expect($menuItems->first()->route)->toBe('admin.sales.transactions.index');
     expect($menuItems->first()->getChildren()->pluck('key')->all())->toBe(['sales.orders']);
 });
