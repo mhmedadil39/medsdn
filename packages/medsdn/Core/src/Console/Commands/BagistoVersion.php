@@ -11,7 +11,7 @@ class BagistoVersion extends Command
      *
      * @var string
      */
-    protected $signature = 'bagisto:version';
+    protected $signature = 'medsdn:version';
 
     /**
      * The console command description.

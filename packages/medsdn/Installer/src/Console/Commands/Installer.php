@@ -8,9 +8,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use Webkul\Installer\Database\Seeders\DatabaseSeeder as BagistoDatabaseSeeder;
+use Webkul\Installer\Database\Seeders\DatabaseSeeder as InstallerDatabaseSeeder;
 use Webkul\Installer\Events\ComposerEvents;
 use Webkul\Installer\Helpers\DatabaseManager;
+use Webkul\Installer\Support\PackageBootstrap\PackageBootstrapManager;
 
 use function Laravel\Prompts\multiselect;
 use function Laravel\Prompts\password;
@@ -25,7 +26,7 @@ class Installer extends Command
      *
      * @var string
      */
-    protected $signature = 'bagisto:install
+    protected $signature = 'medsdn:install
         { --skip-env-check : Skip env check. }
         { --skip-admin-creation : Skip admin creation. }
         { --skip-github-star : Skip GitHub star prompt. }
@@ -36,7 +37,7 @@ class Installer extends Command
      *
      * @var string
      */
-    protected $description = 'Bagisto installer.';
+    protected $description = 'MedSDN installer.';
 
     /**
      * Environment details.
@@ -168,7 +169,7 @@ class Installer extends Command
     ];
 
     /**
-     * Install and configure bagisto.
+     * Install and configure MedSDN.
      */
     public function handle(): void
     {
@@ -202,9 +203,13 @@ class Installer extends Command
         $this->call('db:wipe');
         $this->call('migrate:fresh');
 
-        $this->warn('Step: Seeding basic data for Bagisto kickstart...');
-        app(BagistoDatabaseSeeder::class)->run($this->getSeederConfiguration());
+        $this->warn('Step: Seeding MedSDN base data...');
+        app(InstallerDatabaseSeeder::class)->run($this->getSeederConfiguration());
         $this->components->info('Basic data seeded successfully.');
+
+        $this->warn('Step: Bootstrapping installed MedSDN packages...');
+        $this->bootstrapInstalledPackages();
+        $this->components->info('Package bootstrap completed successfully.');
 
         $this->warn('Step: Linking storage directory...');
         $this->call('storage:link');
@@ -435,11 +440,11 @@ class Installer extends Command
 
             $filePath = storage_path('installed');
 
-            File::put($filePath, 'Bagisto is successfully installed.');
+            File::put($filePath, 'MedSDN is successfully installed.');
 
             $this->info('-----------------------------');
             $this->info('Congratulations!');
-            $this->info('The installation has been finished and you can now use Bagisto.');
+            $this->info('The installation has been finished and you can now use MedSDN.');
             $this->info('Go to '.$this->getEnvVariable('APP_URL').'/'.$this->getEnvVariable('APP_ADMIN_URL', 'admin').' and authenticate with:');
             $this->info('Email: '.$adminEmail);
             $this->info('Password: '.$adminPassword);
@@ -671,6 +676,21 @@ class Installer extends Command
     }
 
     /**
+     * Execute the package bootstrap pipeline for first-party MedSDN packages.
+     */
+    protected function bootstrapInstalledPackages(): void
+    {
+        app(PackageBootstrapManager::class)->bootstrap(
+            function (string $level, string $message): void {
+                match ($level) {
+                    'warn' => $this->components->warn($message),
+                    default => $this->components->info($message),
+                };
+            }
+        );
+    }
+
+    /**
      * Ask user to star the GitHub repository.
      */
     protected function askForGithubStar(): void
@@ -679,7 +699,7 @@ class Installer extends Command
             return;
         }
 
-        $repoUrl = 'https://github.com/bagisto/bagisto';
+        $repoUrl = 'https://github.com/medsdn/medsdn';
 
         if (PHP_OS_FAMILY == 'Darwin') {
             exec("open {$repoUrl}");

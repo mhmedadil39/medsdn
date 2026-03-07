@@ -15,15 +15,27 @@ if (! function_exists('themes')) {
     }
 }
 
+if (! function_exists('medsdn_asset')) {
+    /**
+     * medsdn asset.
+     *
+     * @return string
+     */
+    function medsdn_asset(string $path, ?string $namespace = null)
+    {
+        return themes()->url($path, $namespace);
+    }
+}
+
 if (! function_exists('bagisto_asset')) {
     /**
-     * Bagisto asset.
+     * Bagisto asset compatibility alias.
      *
      * @return string
      */
     function bagisto_asset(string $path, ?string $namespace = null)
     {
-        return themes()->url($path, $namespace);
+        return medsdn_asset($path, $namespace);
     }
 }
 

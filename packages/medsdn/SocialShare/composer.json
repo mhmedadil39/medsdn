@@ -10,13 +10,13 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "Webkul\\SocialShare\\": "src/"
+            "medsdn\\SocialShare\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Webkul\\SocialShare\\Providers\\SocialShareServiceProvider"
+                "medsdn\\SocialShare\\Providers\\SocialShareServiceProvider"
             ],
             "aliases": {}
         }

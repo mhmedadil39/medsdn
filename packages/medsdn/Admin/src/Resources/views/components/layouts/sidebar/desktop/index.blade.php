@@ -1,14 +1,14 @@
 @php
     $sidebarIconMap = [
-        'dashboard'     => bagisto_asset('images/settings/store.svg', 'admin'),
-        'sales'         => bagisto_asset('images/settings/order.svg', 'admin'),
-        'catalog'       => bagisto_asset('images/settings/product.svg', 'admin'),
-        'customers'     => bagisto_asset('images/settings/users.svg', 'admin'),
-        'cms'           => bagisto_asset('images/settings/notes.svg', 'admin'),
-        'marketing'     => bagisto_asset('images/settings/quotes.svg', 'admin'),
-        'reporting'     => bagisto_asset('images/settings/activities.svg', 'admin'),
-        'settings'      => bagisto_asset('images/settings/settings.svg', 'admin'),
-        'configuration' => bagisto_asset('images/settings/theme.svg', 'admin'),
+        'dashboard'     => 'sidebar-dashboard',
+        'sales'         => 'sidebar-sales',
+        'catalog'       => 'sidebar-catalog',
+        'customers'     => 'sidebar-customers',
+        'cms'           => 'sidebar-cms',
+        'marketing'     => 'sidebar-marketing',
+        'reporting'     => 'sidebar-reporting',
+        'settings'      => 'sidebar-settings',
+        'configuration' => 'sidebar-configuration',
     ];
 @endphp
 
@@ -29,11 +29,11 @@
                         @mouseover="hoveringMenu='{{ $menuItem->getKey() }}'"
                         @click="isMenuActive = ! isMenuActive"
                     >
-                        <img
-                            src="{{ $sidebarIconMap[$menuItem->getKey()] ?? bagisto_asset('images/settings/settings.svg', 'admin') }}"
+                        <x-admin::icon.shell
+                            :name="$sidebarIconMap[$menuItem->getKey()] ?? 'sidebar-settings'"
                             alt="{{ core()->getConfigData('general.settings.menu.'.$menuItem->getKey()) ?? $menuItem->getName() }}"
                             data-sidebar-icon="{{ $menuItem->getKey() }}"
-                            class="h-6 w-6 dark:mix-blend-exclusion dark:invert {{ $menuItem->isActive() ? 'brightness-0 invert' : '' }}"
+                            class="h-6 w-6 shrink-0"
                         />
 
                         <div class="flex flex-1 items-center justify-between whitespace-nowrap font-medium text-gray-600 group-[.sidebar-collapsed]/container:hidden {{ $menuItem->isActive() ? 'text-white' : '' }} dark:text-gray-300 group">

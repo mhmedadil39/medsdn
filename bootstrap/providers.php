@@ -5,6 +5,7 @@ return [
      * Application service providers.
      */
     App\Providers\AppServiceProvider::class,
+    App\Providers\MedsdnFakerServiceProvider::class,
 
     /**
      * MedSDN package service providers.

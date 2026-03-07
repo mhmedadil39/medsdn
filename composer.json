@@ -134,6 +134,7 @@
     "extra": {
         "laravel": {
             "dont-discover": [
+                "bagisto/laravel-datafaker",
                 "intervention/image",
                 "laravel/socialite",
                 "shetabit/visitor",

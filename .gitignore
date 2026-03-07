@@ -12,7 +12,7 @@
 *.hot
 .agents/
 .claude/
-.cursor/
+.kiro/
 .opencode/
 /agents/
 agents/

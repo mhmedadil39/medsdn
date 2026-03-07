@@ -264,7 +264,7 @@
     "isDynamicEntry": true
   },
   "src/Resources/assets/css/app.css": {
-    "file": "assets/app-89zrsz-K.css",
+    "file": "assets/app-B17_e-_d.css",
     "src": "src/Resources/assets/css/app.css",
     "isEntry": true
   },
@@ -503,6 +503,78 @@
   "src/Resources/assets/images/spinner.svg": {
     "file": "assets/spinner-CkjnFMgn.svg",
     "src": "src/Resources/assets/images/spinner.svg"
+  },
+  "src/Resources/assets/images/streamline-plump-color/quick-attribute.svg": {
+    "file": "assets/quick-attribute-DGNaBUl6.svg",
+    "src": "src/Resources/assets/images/streamline-plump-color/quick-attribute.svg"
+  },
+  "src/Resources/assets/images/streamline-plump-color/quick-cart-rule.svg": {
+    "file": "assets/quick-cart-rule-BIdllD8G.svg",
+    "src": "src/Resources/assets/images/streamline-plump-color/quick-cart-rule.svg"
+  },
+  "src/Resources/assets/images/streamline-plump-color/quick-category.svg": {
+    "file": "assets/quick-category-w2CuZRxy.svg",
+    "src": "src/Resources/assets/images/streamline-plump-color/quick-category.svg"
+  },
+  "src/Resources/assets/images/streamline-plump-color/quick-cms.svg": {
+    "file": "assets/quick-cms-vVRRmRQo.svg",
+    "src": "src/Resources/assets/images/streamline-plump-color/quick-cms.svg"
+  },
+  "src/Resources/assets/images/streamline-plump-color/quick-family.svg": {
+    "file": "assets/quick-family-FW69RaHN.svg",
+    "src": "src/Resources/assets/images/streamline-plump-color/quick-family.svg"
+  },
+  "src/Resources/assets/images/streamline-plump-color/quick-inventory-source.svg": {
+    "file": "assets/quick-inventory-source-D93UduRK.svg",
+    "src": "src/Resources/assets/images/streamline-plump-color/quick-inventory-source.svg"
+  },
+  "src/Resources/assets/images/streamline-plump-color/quick-product.svg": {
+    "file": "assets/quick-product-DtZqAcTI.svg",
+    "src": "src/Resources/assets/images/streamline-plump-color/quick-product.svg"
+  },
+  "src/Resources/assets/images/streamline-plump-color/quick-role.svg": {
+    "file": "assets/quick-role-BJNLZoEg.svg",
+    "src": "src/Resources/assets/images/streamline-plump-color/quick-role.svg"
+  },
+  "src/Resources/assets/images/streamline-plump-color/sidebar-catalog.svg": {
+    "file": "assets/sidebar-catalog-Dkw0-opl.svg",
+    "src": "src/Resources/assets/images/streamline-plump-color/sidebar-catalog.svg"
+  },
+  "src/Resources/assets/images/streamline-plump-color/sidebar-cms.svg": {
+    "file": "assets/sidebar-cms-DSOKmi9M.svg",
+    "src": "src/Resources/assets/images/streamline-plump-color/sidebar-cms.svg"
+  },
+  "src/Resources/assets/images/streamline-plump-color/sidebar-configuration.svg": {
+    "file": "assets/sidebar-configuration-5jP06M7d.svg",
+    "src": "src/Resources/assets/images/streamline-plump-color/sidebar-configuration.svg"
+  },
+  "src/Resources/assets/images/streamline-plump-color/sidebar-customers.svg": {
+    "file": "assets/sidebar-customers-BSa6DUZD.svg",
+    "src": "src/Resources/assets/images/streamline-plump-color/sidebar-customers.svg"
+  },
+  "src/Resources/assets/images/streamline-plump-color/sidebar-dashboard.svg": {
+    "file": "assets/sidebar-dashboard-5HykjSvZ.svg",
+    "src": "src/Resources/assets/images/streamline-plump-color/sidebar-dashboard.svg"
+  },
+  "src/Resources/assets/images/streamline-plump-color/sidebar-marketing.svg": {
+    "file": "assets/sidebar-marketing-D2MyqHKQ.svg",
+    "src": "src/Resources/assets/images/streamline-plump-color/sidebar-marketing.svg"
+  },
+  "src/Resources/assets/images/streamline-plump-color/sidebar-reporting.svg": {
+    "file": "assets/sidebar-reporting-B5dN5VH-.svg",
+    "src": "src/Resources/assets/images/streamline-plump-color/sidebar-reporting.svg"
+  },
+  "src/Resources/assets/images/streamline-plump-color/sidebar-sales.svg": {
+    "file": "assets/sidebar-sales-B4N2nLKk.svg",
+    "src": "src/Resources/assets/images/streamline-plump-color/sidebar-sales.svg"
+  },
+  "src/Resources/assets/images/streamline-plump-color/sidebar-settings.svg": {
+    "file": "assets/sidebar-settings-On2n3DzK.svg",
+    "src": "src/Resources/assets/images/streamline-plump-color/sidebar-settings.svg"
+  },
+  "src/Resources/assets/images/streamline-plump-color/visit-shop.svg": {
+    "file": "assets/visit-shop-GCBkh4bI.svg",
+    "src": "src/Resources/assets/images/streamline-plump-color/visit-shop.svg"
   },
   "src/Resources/assets/images/total-orders.svg": {
     "file": "assets/total-orders-wduYhIFA.svg",

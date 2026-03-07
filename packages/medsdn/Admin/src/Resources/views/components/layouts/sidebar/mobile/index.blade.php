@@ -1,14 +1,14 @@
 @php
     $sidebarIconMap = [
-        'dashboard'     => bagisto_asset('images/settings/store.svg', 'admin'),
-        'sales'         => bagisto_asset('images/settings/order.svg', 'admin'),
-        'catalog'       => bagisto_asset('images/settings/product.svg', 'admin'),
-        'customers'     => bagisto_asset('images/settings/users.svg', 'admin'),
-        'cms'           => bagisto_asset('images/settings/notes.svg', 'admin'),
-        'marketing'     => bagisto_asset('images/settings/quotes.svg', 'admin'),
-        'reporting'     => bagisto_asset('images/settings/activities.svg', 'admin'),
-        'settings'      => bagisto_asset('images/settings/settings.svg', 'admin'),
-        'configuration' => bagisto_asset('images/settings/theme.svg', 'admin'),
+        'dashboard'     => 'sidebar-dashboard',
+        'sales'         => 'sidebar-sales',
+        'catalog'       => 'sidebar-catalog',
+        'customers'     => 'sidebar-customers',
+        'cms'           => 'sidebar-cms',
+        'marketing'     => 'sidebar-marketing',
+        'reporting'     => 'sidebar-reporting',
+        'settings'      => 'sidebar-settings',
+        'configuration' => 'sidebar-configuration',
     ];
 @endphp
 
@@ -70,12 +70,12 @@
                                     :class="{ 'bg-brandColor text-white': activeMenu === '{{ $menuKey }}' || {{ $isMenuActive ? 'true' : 'false' }}, 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-950': !(activeMenu === '{{ $menuKey }}' || {{ $isMenuActive ? 'true' : 'false' }}) }"
                                 >
                                     <div class="flex items-center gap-3">
-                                        <img
-                                            src="{{ $sidebarIconMap[$menuKey] ?? bagisto_asset('images/settings/settings.svg', 'admin') }}"
+                                        <x-admin::icon.shell
+                                            :name="$sidebarIconMap[$menuKey] ?? 'sidebar-settings'"
                                             alt="{{ core()->getConfigData('general.settings.menu.'.$menuItem->getKey()) ?? $menuItem->getName() }}"
                                             data-sidebar-icon="{{ $menuKey }}"
-                                            class="h-6 w-6 dark:mix-blend-exclusion dark:invert"
-                                            :class="{ 'brightness-0 invert': activeMenu === '{{ $menuKey }}' || {{ $isMenuActive ? 'true' : 'false' }} }"
+                                            mobile="true"
+                                            class="h-6 w-6 shrink-0"
                                         />
 
                                         <p class="whitespace-nowrap font-semibold">{{ core()->getConfigData('general.settings.menu.'.$menuItem->getKey()) ?? $menuItem->getName() }}</p>

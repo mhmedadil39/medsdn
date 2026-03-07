@@ -3,49 +3,49 @@
         [
             'permission' => 'catalog.products.create',
             'route'      => route('admin.catalog.products.index'),
-            'image'      => bagisto_asset('images/settings/product.svg', 'admin'),
+            'icon'       => 'quick-product',
             'label'      => trans('admin::app.catalog.products.index.title'),
         ],
         [
             'permission' => 'catalog.categories.create',
             'route'      => route('admin.catalog.categories.create'),
-            'image'      => bagisto_asset('images/settings/files.svg', 'admin'),
+            'icon'       => 'quick-category',
             'label'      => trans('admin::app.catalog.categories.index.title'),
         ],
         [
             'permission' => 'catalog.attributes.create',
             'route'      => route('admin.catalog.attributes.create'),
-            'image'      => bagisto_asset('images/settings/description.svg', 'admin'),
+            'icon'       => 'quick-attribute',
             'label'      => trans('admin::app.catalog.attributes.index.title'),
         ],
         [
             'permission' => 'catalog.families.create',
             'route'      => route('admin.catalog.families.create'),
-            'image'      => bagisto_asset('images/settings/products.svg', 'admin'),
+            'icon'       => 'quick-family',
             'label'      => trans('admin::app.catalog.families.index.title'),
         ],
         [
             'permission' => 'cms.create',
             'route'      => route('admin.cms.create'),
-            'image'      => bagisto_asset('images/settings/notes.svg', 'admin'),
+            'icon'       => 'quick-cms',
             'label'      => trans('admin::app.components.layouts.sidebar.cms'),
         ],
         [
             'permission' => 'marketing.promotions.cart_rules.create',
             'route'      => route('admin.marketing.promotions.cart_rules.create'),
-            'image'      => bagisto_asset('images/settings/quotes.svg', 'admin'),
+            'icon'       => 'quick-cart-rule',
             'label'      => trans('admin::app.marketing.promotions.index.cart-rule-title'),
         ],
         [
             'permission' => 'settings.inventory_sources.create',
             'route'      => route('admin.settings.inventory_sources.create'),
-            'image'      => bagisto_asset('images/settings/inventory.svg', 'admin'),
+            'icon'       => 'quick-inventory-source',
             'label'      => trans('admin::app.settings.inventory-sources.index.title'),
         ],
         [
             'permission' => 'settings.roles.create',
             'route'      => route('admin.settings.roles.create'),
-            'image'      => bagisto_asset('images/settings/users.svg', 'admin'),
+            'icon'       => 'quick-role',
             'label'      => trans('admin::app.settings.roles.index.title'),
         ],
     ])->filter(fn (array $action) => bouncer()->hasPermission($action['permission']));
@@ -61,7 +61,10 @@
             </x-slot>
 
             <x-slot:content class="mt-2 !p-0">
-                <div class="relative px-2 py-4">
+                <div
+                    class="relative px-2 py-4"
+                    data-role="header-quick-create-grid"
+                >
                     <div class="grid grid-cols-3 gap-2 text-center max-sm:grid-cols-2">
                         @foreach ($quickActions as $quickAction)
                             <a
@@ -69,11 +72,11 @@
                                 class="rounded-lg bg-white p-2 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-950"
                             >
                                 <div class="flex flex-col gap-1">
-                                    <img
-                                        src="{{ $quickAction['image'] }}"
+                                    <x-admin::icon.shell
+                                        :name="$quickAction['icon']"
                                         alt="{{ $quickAction['label'] }}"
-                                        class="mx-auto h-6 w-6 dark:mix-blend-exclusion dark:invert"
-                                    >
+                                        class="mx-auto h-6 w-6"
+                                    />
 
                                     <span class="font-medium dark:text-gray-300">{{ $quickAction['label'] }}</span>
                                 </div>

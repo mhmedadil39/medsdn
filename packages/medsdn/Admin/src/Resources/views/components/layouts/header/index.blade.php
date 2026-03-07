@@ -3,7 +3,10 @@
 @endphp
 
 <header class="sticky top-0 z-[10001] flex items-center justify-between gap-1 border-b border-gray-200 bg-white px-4 py-2.5 transition-all dark:border-gray-800 dark:bg-gray-900">
-    <div class="flex items-center gap-1.5">
+    <div
+        class="flex items-center gap-1.5"
+        data-role="shell-brand-lockup"
+    >
         <x-admin::layouts.sidebar.mobile />
 
         <a href="{{ route('admin.dashboard.index') }}">
@@ -51,10 +54,12 @@
             target="_blank"
             class="hidden md:flex"
         >
-            <span
-                class="icon-store cursor-pointer rounded-md p-1.5 text-2xl transition-all hover:bg-gray-100 dark:hover:bg-gray-950"
+            <x-admin::icon.shell
+                name="visit-shop"
+                :alt="trans('admin::app.components.layouts.header.visit-shop')"
+                class="cursor-pointer rounded-md p-1.5 transition-all hover:bg-gray-100 dark:hover:bg-gray-950"
                 title="@lang('admin::app.components.layouts.header.visit-shop')"
-            ></span>
+            />
         </a>
 
         <v-notifications {{ $attributes }}>
